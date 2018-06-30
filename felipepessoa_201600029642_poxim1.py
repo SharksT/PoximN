@@ -1,7 +1,7 @@
 import sys
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
-rx, ry, rz, memory, reg, img, pre_pc,rt = 0, 0, 0, [], [0] * 36, 25, 0, ''
+rx, ry, rz, memory, reg, img, pre_pc, rt = 0, 0, 0, [], [0] * 36, 25, 0, ''
 for line in f_input:
     memory.append(int(line, 16))
 
@@ -17,19 +17,35 @@ def calculate_fr(x, y, z, result):
         else:
             h = 0
     if rt == 'U' or rt == 'F':
-        if result == 'cmp' or result == 'cmpi':
-            if x == y:
+        if result == 'cmp':
+            if reg[x] == reg[y]:
                 aux[31] = '1'
                 aux[30] = '0'
                 aux[29] = '0'
-            elif x < y:
+            elif reg[x] < reg[y]:
+                aux[31] = '0'
                 aux[30] = '1'
                 aux[29] = '0'
-            elif x > y:
+            elif reg[x] > reg[y]:
                 aux[31] = '0'
                 aux[30] = '0'
                 aux[29] = '1'
-            elif x != y:
+            elif reg[x] != reg[y]:
+                aux[31] = '0'
+        elif result == 'cmpi':
+            if reg[rx] == z:
+                aux[31] = '1'
+                aux[30] = '0'
+                aux[29] = '0'
+            elif reg[rx] < z:
+                aux[31] = '0'
+                aux[30] = '1'
+                aux[29] = '0'
+            elif reg[rx] > z:
+                aux[31] = '0'
+                aux[30] = '0'
+                aux[29] = '1'
+            elif reg[rx] != z:
                 aux[31] = '0'
         else:
             if reg[rx] < 0:
@@ -128,6 +144,8 @@ def prints(x, y, z, result, sinal):
     pre, mid, pos = '', '', ''
     tipo = ['add','sub','mul','div','shl','shr','and','or','xor','addi','subi','muli','divi','andi',
             'ori','xori','ldw','stw','ldb','stb','call','isr']
+    bgs = ['bun','bgt','bne','blt','beq','ble','bzd','bnz','biv','bni']
+    rxry = ['push','pop','not']
     er_ac, aux, fr_ac = ['mul','muli','div','divi'],'',['add', 'sub', 'addi', 'subi', 'mul', 'muli', 'div', 'divi']
     i_ac = ['muli','divi','addi','subi','ldw','ldb']
     if result in er_ac:
@@ -144,8 +162,15 @@ def prints(x, y, z, result, sinal):
         else:
             pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{},{}".format(result, checkextra(z),
                                 checkextra(x), checkextra(y))).ljust(20)
-    if (result not in tipo) and (result != 'ret' and result != 'reti' and result != 'int'):
-        pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x), checkextra(y))).ljust(20)
+    elif (result not in tipo) and (result != 'ret' and result != 'reti' and result != 'int') and (result not in bgs) and (result not in rxry):
+        pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x),
+                                                                                         z)).ljust(20)
+    elif result in rxry:
+        pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
+            "{} {},{}".format(result, checkextra(rx), checkextra(ry))).ljust(20)
+    elif result in bgs:
+        pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
+            "{} 0x{}".format(result, hex(x)[2:].zfill(8).upper())).ljust(20)
     mid = "FR=0x{},".format(hex(reg[35])[2:].zfill(8).upper())
     if result == 'ldw':
         pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(),checkextra(ry),hex(rz)[2:].zfill(4).upper(),
@@ -154,8 +179,20 @@ def prints(x, y, z, result, sinal):
         pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(), checkextra(ry), hex(rz)[2:].zfill(4).upper(),
                                                hex(reg[rx])[2:].zfill(2).upper())
     elif result == 'stb':
-        pos = "MEM[{}+0x{}]={}=0x{}".format(checkextra(rx), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
-                                            hex(reg[ry])[2:].zfill(4).upper())
+        pos = "MEM[{}+0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
+                                            hex(reg[ry])[2:].zfill(2).upper())
+    elif result == 'stw':
+        pos = "MEM[{}+0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
+                                            hex(reg[ry])[2:].zfill(8).upper())
+    elif result == 'call':
+        pos = "{}=(PC+4)>>2=0x{},PC=({}+0x{})<<2=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
+                                                              checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
+                                                              hex(reg[32]*4)[2:].zfill(8).upper())
+    elif result == 'push':
+        pos = "MEM[{}->0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(reg[rx]*4)[2:].zfill(8).upper(), checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper())
+    elif result == 'pop':
+        pos = "{}=MEM[{}->0x{}]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(),hex(reg[ry]*4)[2:].zfill(8).upper(),
+                                                         hex(reg[rx])[2:].zfill(8).upper())
     elif result in i_ac:
         pos = "{}{}={}{}0x{}=0x{}".format(aux, checkextra(x).upper(), checkextra(y).upper(), sinal,
                                          hex(z)[2:].zfill(4).upper(), hex(reg[rx])[2:].zfill(8).upper())
@@ -166,6 +203,8 @@ def prints(x, y, z, result, sinal):
         return pre + mid + pos
     elif result == 'cmp' or result == 'cmpi':
         return pre + mid[:13]
+    elif result in bgs:
+        return pre + "PC=0x{}".format(hex(reg[32]*4)[2:].zfill(8).upper())
     else:
         return pre + pos
 
@@ -291,10 +330,10 @@ while img != 0:
         montador()
         try:
             reg[rx] = int(float(int(reg[ry]) / int(rz)))
-            reg[rx] = calculate_er(rx, reg[ry], rz, result)
+            reg[rx] = calculate_er(reg[rx], reg[ry], rz, result)
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         except ZeroDivisionError:
-            reg[rx] = calculate_er(rx, reg[ry], rz, result)
+            reg[rx] = calculate_er(reg[rx], reg[ry], rz, result)
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         reg[32] += 1
     elif result == 'cmpi':
@@ -326,7 +365,7 @@ while img != 0:
         reg[rx] = int(memory[int(reg[ry] + rz)])
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
-    elif result == 'sdw':
+    elif result == 'stw':
         montador()
         memory[int(reg[rx]) + rz] = reg[ry]
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
@@ -363,6 +402,64 @@ while img != 0:
         montador()
         reg[32] = rx
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'beq':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[31] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'blt':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[30] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'bgt':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[29] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'bne':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[31] == '0':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'ble':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[31] == '1' or h[30] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'bge':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[31] == '1' or h[29] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'call':
+        montador()
+        reg[rx] = reg[32] + 1
+        reg[0] = 0
+        reg[32] = reg[ry] + rz
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'ret':
+        montador()
+        reg[32] = reg[rx]
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
@@ -372,6 +469,7 @@ while img != 0:
             break
     else:
         f_output.write('Nao definido')
+        break
 
 f_input.close()
 f_output.close()
