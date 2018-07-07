@@ -7,7 +7,7 @@ for line in f_input:
 
 
 def calculate_fr(x, y, z, result):
-    global reg,rt
+    global reg, rt
     aux, h = list(str(bin(reg[35])[2:]).zfill(32)), 23
     result1 = ['div', 'mul', 'muli', 'divi']
     result2 = ['add', 'addi']
@@ -82,10 +82,9 @@ def calculate_er(x, y, z, result):
             reg[34] = '0'.zfill(32)
     else:
         x = str(bin(x))[2:].zfill(64)
-        a = x[len(x) % 64:]
-        reg[34] = a[:32]
-        r = int(a[32:], 2)
-    reg[34] = int(reg[34],2)
+        aux2 = x[len(x) % 64:]
+        reg[34] = int(aux2[:32], 2)
+        r = int(aux2[32:], 2)
     return r
 
 
@@ -146,8 +145,8 @@ def prints(x, y, z, result, sinal):
             'ori','xori','ldw','stw','ldb','stb','call','isr']
     bgs = ['bun','bgt','bne','blt','beq','ble','bzd','bnz','biv','bni']
     rxry = ['push','pop','not']
-    er_ac, aux, fr_ac = ['mul','muli','div','divi'],'',['add', 'sub', 'addi', 'subi', 'mul', 'muli', 'div', 'divi']
-    i_ac = ['muli','divi','addi','subi','ldw','ldb']
+    er_ac, aux, fr_ac = ['mul','muli','div','divi','shr','shl'],'',['add', 'sub', 'addi', 'subi', 'mul', 'muli', 'div', 'divi']
+    i_ac = ['muli','divi','addi','subi','ldb']
     if result in er_ac:
         aux = "ER=0x{},".format(hex(reg[34])[2:].zfill(8).upper())
     else:
@@ -155,10 +154,13 @@ def prints(x, y, z, result, sinal):
     if result in tipo:
         if result in i_ac:
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
-                "{} {},{},0x{}".format(result, checkextra(x), checkextra(y),hex(z)[2:].zfill(4).upper() )).ljust(20)
-        elif result == 'stb' or result == 'stw':
+                "{} {},{},{}".format(result, checkextra(x), checkextra(y),z )).ljust(20)
+        elif (result == 'stb') or (result == 'stw'):
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
                 "{} {},0x{},{}".format(result, checkextra(x), hex(z)[2:].zfill(4).upper(),checkextra(y) )).ljust(20)
+        elif (result == 'ldw') or (result == 'call'):
+            pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
+                "{} {},{},0x{}".format(result, checkextra(x), checkextra(y), hex(z)[2:].zfill(4).upper())).ljust(20)
         else:
             pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{},{}".format(result, checkextra(z),
                                 checkextra(x), checkextra(y))).ljust(20)
@@ -173,16 +175,17 @@ def prints(x, y, z, result, sinal):
             "{} 0x{}".format(result, hex(x)[2:].zfill(8).upper())).ljust(20)
     mid = "FR=0x{},".format(hex(reg[35])[2:].zfill(8).upper())
     if result == 'ldw':
-        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(),checkextra(ry),hex(rz)[2:].zfill(4).upper(),
+        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(),hex(rz)[2:].zfill(4).upper(),
                                                  hex(reg[rx])[2:].zfill(8).upper())
     elif result == 'ldb':
-        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(), checkextra(ry), hex(rz)[2:].zfill(4).upper(),
+        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(), checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
                                                hex(reg[rx])[2:].zfill(2).upper())
     elif result == 'stb':
+        a = int((reg[rx] + rz) / 4)
         pos = "MEM[{}+0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
-                                            hex(reg[ry])[2:].zfill(2).upper())
+                                            hex(memory[a])[2:].zfill(2).upper())
     elif result == 'stw':
-        pos = "MEM[{}+0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
+        pos = "MEM[({}+0x{})<<2]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
                                             hex(reg[ry])[2:].zfill(8).upper())
     elif result == 'call':
         pos = "{}=(PC+4)>>2=0x{},PC=({}+0x{})<<2=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
@@ -209,10 +212,11 @@ def prints(x, y, z, result, sinal):
         return pre + pos
 
 def montador():
-    global reg, pre_pc, rx, ry, rz,rt
+    global reg, pre_pc, rx, ry, rz, rt
     reg[0], pre_pc, r = 0, reg[32], checktype(result)
     rx, ry, rz, rt = r['x'], r['y'], r['z'], r['t']
 
+f_output.write('[START OF SIMULATION]\n')
 while img != 0:
     reg[33] = memory[reg[32]]
     reg[0] = 0
@@ -275,7 +279,7 @@ while img != 0:
         montador()
         reg[rz] = reg[rx] >> (ry + 1)
         reg[rz] = calculate_er(reg[rz], 0, 0, result)
-        f_output.write(prints(rx, ry, rz, result, '<<') + '\n')
+        f_output.write(prints(rx, ry, rz, result, '>>') + '\n')
         reg[32] += 1
     elif result == 'and':
         montador()
@@ -308,7 +312,6 @@ while img != 0:
         reg[ry] = reg[ry] + 1
         reg[rx] = memory[reg[ry]]
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
-        reg[rx] = reg[rx] - 1
         reg[32] += 1
     elif result == 'addi':
         montador()
@@ -386,7 +389,7 @@ while img != 0:
     elif result == 'stb':
         montador()
         a = int((reg[rx] + rz) / 4)
-        reg[ry] = str(bin(reg[ry])[2:].zfill(32))
+        reg[ry] = str(bin(reg[ry])[2:])
         if ((reg[rx] + rz) % 4) == 3:
             memory[a] = int(reg[ry][0:8], 2)
         elif ((reg[rx] + rz) % 4) == 2:
@@ -395,7 +398,8 @@ while img != 0:
             memory[a] = int(reg[ry][16:24], 2)
         elif ((reg[rx] + rz) % 4) == 0:
             memory[a] = int(reg[ry][24:32], 2)
-        reg[ry] = int(reg[ry],2)
+        reg[ry] = int(reg[ry], 2)
+        print(hex(memory[a]))
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'bun':
