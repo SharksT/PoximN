@@ -143,10 +143,10 @@ def prints(x, y, z, result, sinal):
     pre, mid, pos = '', '', ''
     tipo = ['add','sub','mul','div','shl','shr','and','or','xor','addi','subi','muli','divi','andi',
             'ori','xori','ldw','stw','ldb','stb','call','isr']
-    bgs = ['bun','bgt','bne','blt','beq','ble','bzd','bnz','biv','bni']
+    bgs = ['bun','bgt','bne','blt','beq','ble','bzd','bnz','biv','bni','bge']
     rxry = ['push','pop','not']
     er_ac, aux, fr_ac = ['mul','muli','div','divi','shr','shl'],'',['add', 'sub', 'addi', 'subi', 'mul', 'muli', 'div', 'divi']
-    i_ac = ['muli','divi','addi','subi','ldb']
+    i_ac = ['muli','divi','addi','subi','ldb','andi','noti','ori','xori']
     if result in er_ac:
         aux = "ER=0x{},".format(hex(reg[34])[2:].zfill(8).upper())
     else:
@@ -154,7 +154,7 @@ def prints(x, y, z, result, sinal):
     if result in tipo:
         if result in i_ac:
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
-                "{} {},{},{}".format(result, checkextra(x), checkextra(y),z )).ljust(20)
+                "{} {},{},{}".format(result, checkextra(x), checkextra(y), z)).ljust(20)
         elif (result == 'stb') or (result == 'stw'):
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
                 "{} {},0x{},{}".format(result, checkextra(x), hex(z)[2:].zfill(4).upper(),checkextra(y) )).ljust(20)
@@ -163,7 +163,7 @@ def prints(x, y, z, result, sinal):
                 "{} {},{},0x{}".format(result, checkextra(x), checkextra(y), hex(z)[2:].zfill(4).upper())).ljust(20)
         else:
             pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{},{}".format(result, checkextra(z),
-                                checkextra(x), checkextra(y))).ljust(20)
+                                checkextra(x), checkextra(y) if (result != 'shl' and result != 'shr') else ry)).ljust(20)
     elif (result not in tipo) and (result != 'ret' and result != 'reti' and result != 'int') and (result not in bgs) and (result not in rxry):
         pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x),
                                                                                          z)).ljust(20)
@@ -173,6 +173,9 @@ def prints(x, y, z, result, sinal):
     elif result in bgs:
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
             "{} 0x{}".format(result, hex(x)[2:].zfill(8).upper())).ljust(20)
+    elif result == 'ret':
+        pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
+            "{} {}".format(result, checkextra(rx))).ljust(20)
     mid = "FR=0x{},".format(hex(reg[35])[2:].zfill(8).upper())
     if result == 'ldw':
         pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(),hex(rz)[2:].zfill(4).upper(),
@@ -191,6 +194,8 @@ def prints(x, y, z, result, sinal):
         pos = "{}=(PC+4)>>2=0x{},PC=({}+0x{})<<2=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
                                                               checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
                                                               hex(reg[32]*4)[2:].zfill(8).upper())
+    elif result == 'ret':
+        pos = "PC={}<<2=0x{}".format(checkextra(rx).upper(), hex(reg[32]*4)[2:].zfill(8).upper())
     elif result == 'push':
         pos = "MEM[{}->0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(reg[rx]*4)[2:].zfill(8).upper(), checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper())
     elif result == 'pop':
@@ -200,7 +205,8 @@ def prints(x, y, z, result, sinal):
         pos = "{}{}={}{}0x{}=0x{}".format(aux, checkextra(x).upper(), checkextra(y).upper(), sinal,
                                          hex(z)[2:].zfill(4).upper(), hex(reg[rx])[2:].zfill(8).upper())
     else:
-        pos = "{}{}={}{}{}=0x{}".format(aux,checkextra(z).upper(),checkextra(x).upper(), sinal, checkextra(y).upper(),
+        pos = "{}{}={}{}{}=0x{}".format(aux,checkextra(z).upper(),checkextra(x).upper(), sinal,
+                                        checkextra(y).upper() if (result != 'shl' and result != 'shr') else ry+1,
                                      hex(reg[rz])[2:].zfill(8).upper())
     if result in fr_ac:
         return pre + mid + pos
