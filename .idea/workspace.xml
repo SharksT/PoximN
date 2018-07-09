@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diff/Untitled-2" beforeDir="false" afterPath="$PROJECT_DIR$/diff/Untitled-2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py" beforeDir="false" afterPath="$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py" afterDir="false" />
-    </list>
+    <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +17,8 @@
       <file leaf-file-name="felipepessoa_201600029642_poxim1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="52" column="33" lean-forward="true" selection-start-line="52" selection-start-column="33" selection-end-line="52" selection-end-column="33" />
+            <state relative-caret-position="176">
+              <caret line="51" column="29" lean-forward="true" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
               <folding>
                 <element signature="e#3772#3956#0" />
               </folding>
@@ -428,8 +423,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="52" column="33" lean-forward="true" selection-start-line="52" selection-start-column="33" selection-end-line="52" selection-end-column="33" />
+        <state relative-caret-position="176">
+          <caret line="51" column="29" lean-forward="true" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
           <folding>
             <element signature="e#3772#3956#0" />
           </folding>
