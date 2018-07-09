@@ -50,7 +50,7 @@ def calculate_fr(x, y, z, result):
         else:
             if reg[rx] < 0:
                 aux[27] = '1'
-                reg[rx] = 0xFFFFFFFF + reg[rx]
+                reg[rx] = 0xFFFFFFFF + 1 + reg[rx]
             else:
                 if abs(int(reg[rx])) < (2 ** 32):
                     aux[27] = '0'
@@ -59,7 +59,7 @@ def calculate_fr(x, y, z, result):
                 if result in result1:
                     x = x
                 else:
-                    reg[rx] = reg[rx] - (2 ** 32)
+                    reg[rx] = reg[rx] - 0xFFFFFFFF
             if aux[27] != '1' and result in result2:
                 if abs(int(reg[rx])) < (2 ** 32):
                     aux[27] = '0'
@@ -105,7 +105,7 @@ def checktype(result):
         else:
             y = int(str(reg[33][16] + reg[33][27:32]), 2)
             x = int(str(reg[33][15] + reg[33][22:27]), 2)
-            z = int(str(reg[33][17] + reg[33][18:22]), 2)
+            z = int(str(reg[33][14] + reg[33][17:22]), 2)
         t = 'U'
     elif result in result2:
         y = int(reg[33][27:32], 2)
@@ -146,7 +146,7 @@ def prints(x, y, z, result, sinal):
     bgs = ['bun','bgt','bne','blt','beq','ble','bzd','bnz','biv','bni','bge']
     rxry = ['push','pop','not']
     er_ac, aux, fr_ac = ['mul','muli','div','divi','shr','shl'],'',['add', 'sub', 'addi', 'subi', 'mul', 'muli', 'div', 'divi']
-    i_ac = ['muli','divi','addi','subi','ldb','andi','noti','ori','xori']
+    i_ac = ['muli','divi','addi','subi','andi','noti','ori','xori']
     if result in er_ac:
         aux = "ER=0x{},".format(hex(reg[34])[2:].zfill(8).upper())
     else:
@@ -161,12 +161,18 @@ def prints(x, y, z, result, sinal):
         elif (result == 'ldw') or (result == 'call'):
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
                 "{} {},{},0x{}".format(result, checkextra(x), checkextra(y), hex(z)[2:].zfill(4).upper())).ljust(20)
+        elif result == 'ldb':
+            pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
+            "{} {},{},0x{}".format(result, checkextra(x), checkextra(y), hex(z)[2:].zfill(4).upper())).ljust(20)
         else:
             pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{},{}".format(result, checkextra(z),
                                 checkextra(x), checkextra(y) if (result != 'shl' and result != 'shr') else ry)).ljust(20)
-    elif (result not in tipo) and (result != 'ret' and result != 'reti' and result != 'int') and (result not in bgs) and (result not in rxry):
+    elif (result not in tipo) and (result != 'ret' and result != 'reti' and result != 'int' and result != 'cmp') and (result not in bgs) and (result not in rxry):
         pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x),
                                                                                          z)).ljust(20)
+    elif result == 'cmp':
+        pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x),
+                                                                                           checkextra(y))).ljust(20)
     elif result in rxry:
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
             "{} {},{}".format(result, checkextra(rx), checkextra(ry))).ljust(20)
@@ -177,11 +183,18 @@ def prints(x, y, z, result, sinal):
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
             "{} {}".format(result, checkextra(rx))).ljust(20)
     mid = "FR=0x{},".format(hex(reg[35])[2:].zfill(8).upper())
-    if result == 'ldw':
+    # Sessão POS
+    if result == 'not':
+        pos = "{}={}{}=0x{}".format(checkextra(x).upper(), sinal, checkextra(y).upper(),
+                                    hex(reg[rx])[2:].zfill(8).upper())
+    elif result == 'noti':
+        pos = "{}={}0x{}=0x{}".format(checkextra(x).upper(), sinal,
+                                          hex(z)[2:].zfill(4).upper(), hex(reg[rx])[2:].zfill(8).upper())
+    elif result == 'ldw':
         pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(),hex(rz)[2:].zfill(4).upper(),
                                                  hex(reg[rx])[2:].zfill(8).upper())
     elif result == 'ldb':
-        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(), checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
+        pos = "{}=MEM[{}+0x{}]=0x{}".format(checkextra(rx).upper(), checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
                                                hex(reg[rx])[2:].zfill(2).upper())
     elif result == 'stb':
         a = int((reg[rx] + rz) / 4)
@@ -283,7 +296,8 @@ while img != 0:
         reg[32] += 1
     elif result == 'shr':
         montador()
-        reg[rz] = reg[rx] >> (ry + 1)
+        aux = int(str(bin(reg[34])[2:].zfill(32)) + str(bin(reg[rx])[2:].zfill(32)), 2)
+        reg[rz] = aux >> (ry + 1)
         reg[rz] = calculate_er(reg[rz], 0, 0, result)
         f_output.write(prints(rx, ry, rz, result, '>>') + '\n')
         reg[32] += 1
@@ -405,7 +419,6 @@ while img != 0:
         elif ((reg[rx] + rz) % 4) == 0:
             memory[a] = int(reg[ry][24:32], 2)
         reg[ry] = int(reg[ry], 2)
-        print(hex(memory[a]))
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'bun':
@@ -480,6 +493,5 @@ while img != 0:
     else:
         f_output.write('Nao definido')
         break
-
 f_input.close()
 f_output.close()

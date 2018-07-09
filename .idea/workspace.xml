@@ -15,19 +15,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1531075099039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1531158107117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="felipepessoa_201600029642_poxim1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="158" column="74" selection-start-line="158" selection-start-column="74" selection-end-line="158" selection-end-column="74" />
+            <state relative-caret-position="199">
+              <caret line="52" column="33" lean-forward="true" selection-start-line="52" selection-start-column="33" selection-end-line="52" selection-end-column="33" />
               <folding>
-                <element signature="e#249#2204#0" />
-                <element signature="e#2246#2583#0" />
-                <element signature="e#2613#3745#0" />
+                <element signature="e#3772#3956#0" />
               </folding>
             </state>
           </provider>
@@ -36,8 +34,8 @@
       <file leaf-file-name="a.out" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/a.out">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="79" column="71" lean-forward="true" selection-start-line="79" selection-start-column="71" selection-end-line="79" selection-end-column="71" />
+            <state relative-caret-position="170">
+              <caret line="132" column="74" lean-forward="true" selection-end-line="166" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -55,13 +53,11 @@
     <findStrings>
       <find>r[</find>
       <find>reg[r['y']</find>
-      <find>shr</find>
       <find>mul</find>
       <find>muli</find>
       <find>divi</find>
       <find>result == 'divi</find>
       <find>result == 'call</find>
-      <find>call</find>
       <find>cmpi</find>
       <find>calculate_fr</find>
       <find>result == 'bne</find>
@@ -78,6 +74,11 @@
       <find>sh</find>
       <find>result == 'not'</find>
       <find>ljust(20)</find>
+      <find>print(</find>
+      <find>shr</find>
+      <find>call</find>
+      <find>result == 'sub'</find>
+      <find>subi r3</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -245,7 +246,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="21" />
+      <option name="time" value="23" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -301,9 +302,7 @@
         <state relative-caret-position="4117">
           <caret line="179" column="25" selection-start-line="179" selection-start-column="25" selection-end-line="179" selection-end-column="25" />
           <folding>
-            <element signature="e#249#2204#0" />
-            <element signature="e#2246#2583#0" />
-            <element signature="e#2613#3745#0" />
+            <element signature="e#3772#3956#0" />
           </folding>
         </state>
       </provider>
@@ -422,19 +421,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/a.out">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="79" column="71" lean-forward="true" selection-start-line="79" selection-start-column="71" selection-end-line="79" selection-end-column="71" />
+        <state relative-caret-position="170">
+          <caret line="132" column="74" lean-forward="true" selection-end-line="166" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="158" column="74" selection-start-line="158" selection-start-column="74" selection-end-line="158" selection-end-column="74" />
+        <state relative-caret-position="199">
+          <caret line="52" column="33" lean-forward="true" selection-start-line="52" selection-start-column="33" selection-end-line="52" selection-end-column="33" />
           <folding>
-            <element signature="e#249#2204#0" />
-            <element signature="e#2246#2583#0" />
-            <element signature="e#2613#3745#0" />
+            <element signature="e#3772#3956#0" />
           </folding>
         </state>
       </provider>
