@@ -7,6 +7,8 @@ for line in f_input:
 
 
 def calculate_fr(x, y, z, result):
+    # 6 IE, 5 IV, 4 OV. 3 ZD, 2 GT, 1 LT, EQ
+    # 31 EQ, 30 LT, 29 GT. 28 ZD, 27 OV, 26 IV, 25 IE <- Ordem no registrador
     global reg, rt
     aux, h = list(str(bin(reg[35])[2:]).zfill(32)), 23
     result1 = ['div', 'mul', 'muli', 'divi']
@@ -469,6 +471,38 @@ while img != 0:
         montador()
         h = list(str(bin(reg[35])[2:]).zfill(32))
         if h[31] == '1' or h[29] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'bzd':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[28] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+     elif result == 'bnz':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[28] == '0':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'biv':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[26] == '1':
+            reg[32] = rx
+        else:
+            reg[32] = reg[32] + 1
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'bni':
+        montador()
+        h = list(str(bin(reg[35])[2:]).zfill(32))
+        if h[26] == '0':
             reg[32] = rx
         else:
             reg[32] = reg[32] + 1
