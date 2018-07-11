@@ -1,7 +1,7 @@
 import sys
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
-rx, ry, rz, memory, reg, img, pre_pc, rt = 0, 0, 0, [], [0] * 37, 25, 0, ''
+rx, ry, rz, memory, reg, img, pre_pc, rt = 0, 0, 0, [], [0] * 38, 25, 0, ''
 for line in f_input:
     memory.append(int(line, 16))
 
@@ -14,8 +14,13 @@ def calculate_fr(x, y, z, result):
     result1 = ['div', 'mul', 'muli', 'divi']
     result2 = ['add', 'addi']
     if result == 'div' or result == 'divi':
-        if z == 0:
+        if y == 0:
             h = 1
+            if aux[25] == '1':
+                reg[36] = 1
+                f_output.write("[SOFTWARE INTERRUPTION]\n")
+                reg[37] = reg[32] + 1
+                reg[32] = 2
         else:
             h = 0
     if rt == 'U' or rt == 'F':
@@ -96,8 +101,8 @@ def checktype(result):
     result1 = ['add', 'sub', 'mul', 'div', 'cmp', 'shl',
                'shr', 'and', 'not', 'or', 'xor', 'push', 'pop']
     result2 = ['addi', 'subi', 'muli', 'divi', 'cmpi', 'andi', 'noti', 'ldw', 'stw',
-               'ldb', 'stb', 'ldw', 'call', 'ret','xori','ori']
-    result3 = ['bun', 'beq', 'blt', 'bne', 'ble', 'bge', 'int', 'bgt']
+               'ldb', 'stb', 'ldw', 'call', 'ret','xori','ori','isr']
+    result3 = ['bun', 'beq', 'blt', 'bne', 'ble', 'bge', 'int', 'bgt','bzd','bnz','biv','bni']
     reg[33] = str(bin(reg[33]))[2:].zfill(32)
     if result in result1:
         if result == 'cmp':
@@ -160,7 +165,7 @@ def prints(x, y, z, result, sinal):
         elif (result == 'stb') or (result == 'stw'):
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
                 "{} {},0x{},{}".format(result, checkextra(x), hex(z)[2:].zfill(4).upper(),checkextra(y) )).ljust(20)
-        elif (result == 'ldw') or (result == 'call'):
+        elif (result == 'ldw') or (result == 'call') or (result == 'isr'):
             pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
                 "{} {},{},0x{}".format(result, checkextra(x), checkextra(y), hex(z)[2:].zfill(4).upper())).ljust(20)
         elif result == 'ldb':
@@ -184,6 +189,9 @@ def prints(x, y, z, result, sinal):
     elif result == 'ret':
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
             "{} {}".format(result, checkextra(rx))).ljust(20)
+    elif result == 'int':
+        pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
+            "{} {}".format(result, rz)).ljust(20)
     mid = "FR=0x{},".format(hex(reg[35])[2:].zfill(8).upper())
     # Sessão POS
     if result == 'not':
@@ -209,6 +217,10 @@ def prints(x, y, z, result, sinal):
         pos = "{}=(PC+4)>>2=0x{},PC=({}+0x{})<<2=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
                                                               checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
                                                               hex(reg[32]*4)[2:].zfill(8).upper())
+    elif result == 'isr':
+        pos = "{}=IPC>>2=0x{},{}=CR=0x{},PC=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
+                                                         checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper(),
+                                                         hex(reg[32])[2:].zfill(8).upper())
     elif result == 'ret':
         pos = "PC={}<<2=0x{}".format(checkextra(rx).upper(), hex(reg[32]*4)[2:].zfill(8).upper())
     elif result == 'push':
@@ -219,6 +231,8 @@ def prints(x, y, z, result, sinal):
     elif result in i_ac:
         pos = "{}{}={}{}0x{}=0x{}".format(aux, checkextra(x).upper(), checkextra(y).upper(), sinal,
                                          hex(z)[2:].zfill(4).upper(), hex(reg[rx])[2:].zfill(8).upper())
+    elif result == 'int':
+        pos = "CR=0x{},PC=0x{}".format(hex(reg[36])[2:].zfill(8).upper(),hex(reg[32]*4)[2:].zfill(8).upper())
     else:
         pos = "{}{}={}{}{}=0x{}".format(aux,checkextra(z).upper(),checkextra(x).upper(), sinal,
                                         checkextra(y).upper() if (result != 'shl' and result != 'shr') else ry+1,
@@ -249,7 +263,7 @@ while img != 0:
                '010101': 'andi','010110': 'noti', '010111': 'ori', '011000': 'xori', '011001': 'ldw', '011010': 'stw',
                '011011': 'ldb','011100': 'stb', '100000': 'bun', '100001': 'beq', '100010': 'blt', '100011': 'bgt',
                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',
-               '101010': 'bni', '110000': 'call', '110001': 'ret', '111111': 'int'}
+               '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'}
     result = choices.get(op, 'Não definido')
 
     if result == 'add':
@@ -275,7 +289,7 @@ while img != 0:
             reg[rz] = calculate_er(reg[rz], reg[rx], reg[ry], result)
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         except ZeroDivisionError:
-            reg[rz] = calculate_er(reg[rz], reg[rx], reg[ry], result)
+            #reg[rz] = calculate_er(reg[rz], reg[rx], reg[ry], result)
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         reg[32] += 1
     elif result == 'cmp':
@@ -481,7 +495,7 @@ while img != 0:
         else:
             reg[32] = reg[32] + 1
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
-     elif result == 'bnz':
+    elif result == 'bnz':
         montador()
         h = list(str(bin(reg[35])[2:]).zfill(32))
         if h[28] == '0':
@@ -515,6 +529,16 @@ while img != 0:
         montador()
         reg[32] = reg[rx]
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'isr':
+        montador()
+        reg[rx] = reg[37]
+        reg[ry] = reg[36]
+        reg[32] = rz
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+    elif result == 'reti':
+        montador()
+        reg[32] = reg[rz]
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
@@ -522,8 +546,18 @@ while img != 0:
             reg[0] = 0
             f_output.write('[END OF SIMULATION]')
             break
+        else:
+            reg[37] = reg[32] + 1
+            reg[36] = rz
+            reg[32] = 3
+            f_output.write("[SOFTWARE INTERRUPTION]\n")
     else:
-        f_output.write('Nao definido')
+        aux = list(str(bin(reg[35])[2:]).zfill(32))
+        aux[26] = '1'
+        reg[35] = ''.join(aux)
+        reg[35] = int(reg[35], 2)
+        reg[36] = reg[32]
+        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[34])[2:].zfill(8).upper()))
         break
 f_input.close()
 f_output.close()
