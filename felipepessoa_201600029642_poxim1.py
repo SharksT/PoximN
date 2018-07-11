@@ -102,7 +102,7 @@ def checktype(result):
                'shr', 'and', 'not', 'or', 'xor', 'push', 'pop']
     result2 = ['addi', 'subi', 'muli', 'divi', 'cmpi', 'andi', 'noti', 'ldw', 'stw',
                'ldb', 'stb', 'ldw', 'call', 'ret','xori','ori','isr']
-    result3 = ['bun', 'beq', 'blt', 'bne', 'ble', 'bge', 'int', 'bgt','bzd','bnz','biv','bni']
+    result3 = ['bun', 'beq', 'blt', 'bne', 'ble', 'bge', 'bgt','bzd','bnz','biv','bni', 'int']
     reg[33] = str(bin(reg[33]))[2:].zfill(32)
     if result in result1:
         if result == 'cmp':
@@ -543,6 +543,7 @@ while img != 0:
         montador()
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         if rz == 0:
+            print("a")
             reg[0] = 0
             f_output.write('[END OF SIMULATION]')
             break
