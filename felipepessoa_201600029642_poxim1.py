@@ -543,7 +543,6 @@ while img != 0:
         montador()
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         if rx == 0:
-            print("a")
             reg[0] = 0
             f_output.write('[END OF SIMULATION]')
             break
@@ -558,7 +557,6 @@ while img != 0:
         reg[35] = ''.join(aux)
         reg[35] = int(reg[35], 2)
         reg[36] = reg[32]
-        reg[32] = reg[32] + 1
-        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32])[2:].zfill(8).upper()))
+        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32*4])[2:].zfill(8).upper()))
 f_input.close()
 f_output.close()
