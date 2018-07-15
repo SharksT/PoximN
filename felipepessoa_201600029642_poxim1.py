@@ -557,6 +557,8 @@ while img != 0:
         reg[35] = ''.join(aux)
         reg[35] = int(reg[35], 2)
         reg[36] = reg[32]
-        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32*4])[2:].zfill(8).upper()))
+        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32]*4)[2:].zfill(8).upper()))
+        reg[32] = 3
+        f_output.write("[SOFTWARE INTERRUPTION]\n")
 f_input.close()
 f_output.close()
