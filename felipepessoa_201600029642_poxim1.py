@@ -191,7 +191,7 @@ def prints(x, y, z, result, sinal):
             "{} {}".format(result, checkextra(rx))).ljust(20)
     elif result == 'int':
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
-            "{} {}".format(result, rz)).ljust(20)
+            "{} {}".format(result, rx)).ljust(20)
     mid = "FR=0x{},".format(hex(reg[35])[2:].zfill(8).upper())
     # Sessão POS
     if result == 'not':
@@ -542,14 +542,14 @@ while img != 0:
     elif result == 'int':
         montador()
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
-        if rz == 0:
+        if rx == 0:
             print("a")
             reg[0] = 0
             f_output.write('[END OF SIMULATION]')
             break
         else:
             reg[37] = reg[32] + 1
-            reg[36] = rz
+            reg[36] = rx
             reg[32] = 3
             f_output.write("[SOFTWARE INTERRUPTION]\n")
     else:
@@ -558,7 +558,7 @@ while img != 0:
         reg[35] = ''.join(aux)
         reg[35] = int(reg[35], 2)
         reg[36] = reg[32]
-        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[34])[2:].zfill(8).upper()))
-        break
+        reg[32] = reg[32] + 1
+        f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32])[2:].zfill(8).upper()))
 f_input.close()
 f_output.close()
