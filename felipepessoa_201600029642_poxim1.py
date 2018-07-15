@@ -1,7 +1,7 @@
 import sys
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
-rx, ry, rz, memory, reg, img, pre_pc, rt = 0, 0, 0, [], [0] * 38, 25, 0, ''
+rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac = 0, 0, 0, [], [0] * 38, 25, 0, '', False
 for line in f_input:
     memory.append(int(line, 16))
 
@@ -9,7 +9,7 @@ for line in f_input:
 def calculate_fr(x, y, z, result):
     # 6 IE, 5 IV, 4 OV. 3 ZD, 2 GT, 1 LT, EQ
     # 31 EQ, 30 LT, 29 GT. 28 ZD, 27 OV, 26 IV, 25 IE <- Ordem no registrador
-    global reg, rt
+    global reg, rt, inter_ac
     aux, h = list(str(bin(reg[35])[2:]).zfill(32)), 23
     result1 = ['div', 'mul', 'muli', 'divi']
     result2 = ['add', 'addi']
@@ -18,9 +18,9 @@ def calculate_fr(x, y, z, result):
             h = 1
             if aux[25] == '1':
                 reg[36] = 1
-                f_output.write("[SOFTWARE INTERRUPTION]\n")
                 reg[37] = reg[32] + 1
                 reg[32] = 2
+                inter_ac= True
         else:
             h = 0
     if rt == 'U' or rt == 'F':
@@ -145,7 +145,7 @@ def prints(x, y, z, result, sinal):
     lista = ['add', 'sub', 'addi', 'subi', 'mul', 'muli', 'div', 'divi', 'cmp', 'cmpi']
     if result in lista:
         calculate_fr(rx, ry, rz, result)
-    global reg, pre_pc
+    global reg, pre_pc, inter_ac
     reg[0] = 0
     pre, mid, pos = '', '', ''
     tipo = ['add','sub','mul','div','shl','shr','and','or','xor','addi','subi','muli','divi','andi',
@@ -237,6 +237,9 @@ def prints(x, y, z, result, sinal):
         pos = "{}{}={}{}{}=0x{}".format(aux,checkextra(z).upper(),checkextra(x).upper(), sinal,
                                         checkextra(y).upper() if (result != 'shl' and result != 'shr') else ry+1,
                                      hex(reg[rz])[2:].zfill(8).upper())
+    if inter_ac:
+        pos = pos + "\n[SOFTWARE INTERRUPTION]"
+        inter_ac = False
     if result in fr_ac:
         return pre + mid + pos
     elif result == 'cmp' or result == 'cmpi':
