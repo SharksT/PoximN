@@ -1,9 +1,9 @@
 import sys
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
-rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac = 0, 0, 0, [], [0] * 38, 25, 0, '', False
-for line in f_input:
-    memory.append(int(line, 16))
+rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
+for i, line in enumerate(f_input):
+    memory[i] = int(line, 16)
 
 
 def calculate_fr(x, y, z, result):
@@ -201,7 +201,7 @@ def prints(x, y, z, result, sinal):
         pos = "{}={}0x{}=0x{}".format(checkextra(x).upper(), sinal,
                                           hex(z)[2:].zfill(4).upper(), hex(reg[rx])[2:].zfill(8).upper())
     elif result == 'ldw':
-        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(),hex(rz)[2:].zfill(4).upper(),
+        pos = "{}=MEM[({}+0x{})<<2]=0x{}".format(checkextra(rx).upper(), checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
                                                  hex(reg[rx])[2:].zfill(8).upper())
     elif result == 'ldb':
         pos = "{}=MEM[{}+0x{}]=0x{}".format(checkextra(rx).upper(), checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
@@ -212,7 +212,7 @@ def prints(x, y, z, result, sinal):
                                             hex(memory[a])[2:].zfill(2).upper())
     elif result == 'stw':
         pos = "MEM[({}+0x{})<<2]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
-                                            hex(reg[ry])[2:].zfill(8).upper())
+                                                 hex(reg[ry])[2:].zfill(8).upper())
     elif result == 'call':
         pos = "{}=(PC+4)>>2=0x{},PC=({}+0x{})<<2=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
                                                               checkextra(ry).upper(), hex(rz)[2:].zfill(4).upper(),
@@ -224,9 +224,10 @@ def prints(x, y, z, result, sinal):
     elif result == 'ret':
         pos = "PC={}<<2=0x{}".format(checkextra(rx).upper(), hex(reg[32]*4)[2:].zfill(8).upper())
     elif result == 'push':
-        pos = "MEM[{}->0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(reg[rx]*4)[2:].zfill(8).upper(), checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper())
+        pos = "MEM[{}->0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(reg[rx]*4)[2:].zfill(8).upper(),
+                                             checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper())
     elif result == 'pop':
-        pos = "{}=MEM[{}->0x{}]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(),hex(reg[ry]*4)[2:].zfill(8).upper(),
+        pos = "{}=MEM[{}->0x{}]=0x{}".format(checkextra(rx).upper(),checkextra(ry).upper(), hex(reg[ry]*4)[2:].zfill(8).upper(),
                                                          hex(reg[rx])[2:].zfill(8).upper())
     elif result in i_ac:
         pos = "{}{}={}{}0x{}=0x{}".format(aux, checkextra(x).upper(), checkextra(y).upper(), sinal,
@@ -254,8 +255,11 @@ def montador():
     reg[0], pre_pc, r = 0, reg[32], checktype(result)
     rx, ry, rz, rt = r['x'], r['y'], r['z'], r['t']
 
+
 f_output.write('[START OF SIMULATION]\n')
 while img != 0:
+    if watch_ac:
+        watch_c = watch_c - 1
     reg[33] = memory[reg[32]]
     reg[0] = 0
     ir = bin(reg[33])[2:].zfill(32)
@@ -268,8 +272,13 @@ while img != 0:
                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',
                '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'}
     result = choices.get(op, 'Não definido')
-
-    if result == 'add':
+    if watch_ac and (watch_c == 0):
+        watch_ac = False
+        f_output.write("[HARDWARE INTERRUPTION 1]\n")
+        reg[32] = 1
+        reg[36] = 3786147034
+        reg[37] = pre_pc
+    elif result == 'add':
         montador()
         reg[rz] = int(reg[rx]) + int(reg[ry])
         f_output.write(prints(rx, ry, rz, result, '+') + '\n')
@@ -407,7 +416,16 @@ while img != 0:
         reg[32] += 1
     elif result == 'stw':
         montador()
-        memory[int(reg[rx]) + rz] = reg[ry]
+        aux = reg[rx] + rz
+        memory[aux] = reg[ry]
+        if aux == 8224:
+            aux = list(str(bin(reg[ry])[2:]).zfill(32))
+            print(aux)
+            if aux[0] == '1':
+                print('a')
+                aux = str(bin(reg[ry])[2:]).zfill(32)
+                watch_c = int(aux[1:32], 2)
+                watch_ac = True
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'ldb':
