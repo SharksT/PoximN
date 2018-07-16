@@ -4,10 +4,7 @@
     <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diff/Untitled-1" beforeDir="false" afterPath="$PROJECT_DIR$/diff/Untitled-1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diff/Untitled-2" beforeDir="false" afterPath="$PROJECT_DIR$/diff/Untitled-2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py" beforeDir="false" afterPath="$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/teste.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,15 +14,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1531766202473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1531767792064" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="felipepessoa_201600029642_poxim1.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="felipepessoa_201600029642_poxim1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="279" column="24" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="24" />
+            <state relative-caret-position="37">
+              <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
               <folding>
                 <element signature="e#249#2517#0" />
                 <element signature="e#2559#2896#0" />
@@ -34,11 +31,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="a.out" pinned="false" current-in-tab="false">
+      <file leaf-file-name="a.out" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/a.out">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="109" column="37" selection-end-line="115" selection-end-column="19" />
+            <state relative-caret-position="115">
+              <caret line="5" column="30" lean-forward="true" selection-end-line="115" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -92,6 +89,7 @@
       <find />
       <find>ljust(20)</find>
       <find>watch_c</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -221,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1531759839450</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="WatchDog finalizado">
+      <created>1531766257176</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1531766257176</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -287,14 +292,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Interrupção finalizada." />
-    <option name="LAST_COMMIT_MESSAGE" value="Interrupção finalizada." />
+    <MESSAGE value="WatchDog finalizado" />
+    <option name="LAST_COMMIT_MESSAGE" value="WatchDog finalizado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py</url>
-          <line>426</line>
+          <line>424</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -597,21 +603,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/a.out">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="109" column="37" selection-end-line="115" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="279" column="24" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="24" />
+        <state relative-caret-position="37">
+          <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
           <folding>
             <element signature="e#249#2517#0" />
             <element signature="e#2559#2896#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/a.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="30" lean-forward="true" selection-end-line="115" selection-end-column="19" />
         </state>
       </provider>
     </entry>

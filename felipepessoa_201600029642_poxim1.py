@@ -420,9 +420,7 @@ while img != 0:
         memory[aux] = reg[ry]
         if aux == 8224:
             aux = list(str(bin(reg[ry])[2:]).zfill(32))
-            print(aux)
             if aux[0] == '1':
-                print('a')
                 aux = str(bin(reg[ry])[2:]).zfill(32)
                 watch_c = int(aux[1:32], 2)
                 watch_ac = True
