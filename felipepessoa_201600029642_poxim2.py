@@ -1,9 +1,13 @@
 import sys
+import ctypes
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
+
+def floatBin(x):
+    return bin(ctypes.c_uint.from_buffer(ctypes.c_float(x)).value)[2:].zfill(32)
 
 
 def calculate_fr(x, y, z, result):
