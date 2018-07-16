@@ -18,9 +18,9 @@ def calculate_fr(x, y, z, result):
             h = 1
             if aux[25] == '1':
                 reg[36] = 1
+                inter_ac = True
                 reg[37] = reg[32] + 1
                 reg[32] = 2
-                inter_ac= True
         else:
             h = 0
     if rt == 'U' or rt == 'F':
@@ -220,7 +220,7 @@ def prints(x, y, z, result, sinal):
     elif result == 'isr':
         pos = "{}=IPC>>2=0x{},{}=CR=0x{},PC=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
                                                          checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper(),
-                                                         hex(reg[32])[2:].zfill(8).upper())
+                                                         hex(reg[32]*4)[2:].zfill(8).upper())
     elif result == 'ret':
         pos = "PC={}<<2=0x{}".format(checkextra(rx).upper(), hex(reg[32]*4)[2:].zfill(8).upper())
     elif result == 'push':
@@ -238,8 +238,8 @@ def prints(x, y, z, result, sinal):
                                         checkextra(y).upper() if (result != 'shl' and result != 'shr') else ry+1,
                                      hex(reg[rz])[2:].zfill(8).upper())
     if inter_ac:
-        pos = pos + "\n[SOFTWARE INTERRUPTION]"
-        inter_ac = False
+        pos = pos + ("\n[SOFTWARE INTERRUPTION]")
+        inter_ac= False
     if result in fr_ac:
         return pre + mid + pos
     elif result == 'cmp' or result == 'cmpi':
@@ -544,15 +544,18 @@ while img != 0:
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
-        f_output.write(prints(rx, ry, rz, result, '') + '\n')
         if rx == 0:
             reg[0] = 0
+            reg[36] = 0
+            reg[32] = 0
+            f_output.write(prints(rx, ry, rz, result, '') + '\n')
             f_output.write('[END OF SIMULATION]')
             break
         else:
             reg[37] = reg[32] + 1
             reg[36] = rx
             reg[32] = 3
+            f_output.write(prints(rx, ry, rz, result, '') + '\n')
             f_output.write("[SOFTWARE INTERRUPTION]\n")
     else:
         aux = list(str(bin(reg[35])[2:]).zfill(32))
@@ -560,8 +563,9 @@ while img != 0:
         reg[35] = ''.join(aux)
         reg[35] = int(reg[35], 2)
         reg[36] = reg[32]
+        reg[37] = reg[32] + 1
         f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32]*4)[2:].zfill(8).upper()))
-        reg[32] = 3
         f_output.write("[SOFTWARE INTERRUPTION]\n")
+        reg[32] = 3
 f_input.close()
 f_output.close()
