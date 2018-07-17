@@ -6,7 +6,8 @@ rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0,
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
-def floatBin(x):
+
+def float_bin(x):
     return bin(ctypes.c_uint.from_buffer(ctypes.c_float(x)).value)[2:].zfill(32)
 
 
@@ -305,7 +306,6 @@ while img != 0:
             reg[rz] = calculate_er(reg[rz], reg[rx], reg[ry], result)
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         except ZeroDivisionError:
-            #reg[rz] = calculate_er(reg[rz], reg[rx], reg[ry], result)
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         reg[32] += 1
     elif result == 'cmp':
