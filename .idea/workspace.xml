@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diff/Untitled-1" beforeDir="false" afterPath="$PROJECT_DIR$/diff/Untitled-1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diff/Untitled-2" beforeDir="false" afterPath="$PROJECT_DIR$/diff/Untitled-2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" beforeDir="false" afterPath="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/teste.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,16 +17,16 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1531769390757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1531769047493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1531930983976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1531941631089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="felipepessoa_201600029642_poxim2.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-12539">
-              <caret line="3" column="33" lean-forward="true" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
+            <state relative-caret-position="-10198">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -33,8 +37,8 @@
       <file leaf-file-name="a.out" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/a.out">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="9" column="38" selection-end-line="115" selection-end-column="19" />
+            <state relative-caret-position="164">
+              <caret line="24" column="55" selection-end-line="128" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -42,8 +46,8 @@
       <file leaf-file-name="teste.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/teste.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+            <state relative-caret-position="376">
+              <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -59,36 +63,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>r[</find>
-      <find>reg[r['y']</find>
-      <find>mul</find>
       <find>muli</find>
       <find>divi</find>
-      <find>result == 'divi</find>
-      <find>result == 'call</find>
+      <find />
+      <find />
       <find>cmpi</find>
       <find>calculate_fr</find>
-      <find>result == 'bne</find>
+      <find />
       <find>pop</find>
       <find>p</find>
-      <find>add r3,r2</find>
+      <find />
       <find>1c</find>
       <find>bgt</find>
       <find>add</find>
       <find>reet</find>
-      <find>result == 'stw</find>
+      <find />
       <find>stw</find>
       <find>ret</find>
       <find>sh</find>
-      <find>result == 'not'</find>
+      <find />
       <find>print(</find>
       <find>shr</find>
       <find>call</find>
-      <find>result == 'sub'</find>
-      <find>subi r3</find>
+      <find />
+      <find />
       <find>ljust(20)</find>
       <find>watch_c</find>
       <find>print</find>
+      <find />
+      <find />
+      <find>pre_pc</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,10 +101,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/a.out" />
-        <option value="$PROJECT_DIR$/teste.txt" />
         <option value="$PROJECT_DIR$/teste.py" />
         <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py" />
+        <option value="$PROJECT_DIR$/a.out" />
+        <option value="$PROJECT_DIR$/teste.txt" />
         <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" />
       </list>
     </option>
@@ -125,6 +129,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -136,7 +141,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -157,7 +161,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.teste">
+  <component name="RunManager" selected="Python.felipepessoa_201600029642_poxim1">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="PoximN" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -221,8 +225,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.teste" />
         <item itemvalue="Python.felipepessoa_201600029642_poxim1" />
+        <item itemvalue="Python.teste" />
       </list>
     </recent_temporary>
   </component>
@@ -265,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1531769699450</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Refatoração e Float 0.02">
+      <created>1531848798231</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1531848798231</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -277,9 +288,9 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49930555" weight="0.32894737" />
       <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49722221" weight="0.3881579" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49722221" visible="true" weight="0.3881579" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="5" />
       <window_info anchor="right" id="SciView" order="4" />
@@ -291,10 +302,10 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" x="0" y="0" width="310" height="700" id="Documentation" order="0" side_tool="true" weight="0.3298611" />
+      <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Messages" order="7" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,7 +345,8 @@
     <MESSAGE value="WatchDog finalizado" />
     <MESSAGE value="WatchDog finalizado -" />
     <MESSAGE value="Refatoração e Float 0.01" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refatoração e Float 0.01" />
+    <MESSAGE value="Refatoração e Float 0.02" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refatoração e Float 0.02" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -345,45 +357,64 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="30" />
+      <option name="time" value="37" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="reg[0]" language="Python" />
-        <watch expression="reg[5]" language="Python" />
-        <watch expression="aux[1:31]" language="Python" />
+        <watch expression="memory[8706]" language="Python" />
+        <watch expression="value1[1:9]" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
       <expression>
-        <expression-string>result == 'cmpi'</expression-string>
+        <expression-string />
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>rx==2 and ry==1</expression-string>
+        <expression-string />
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>rx== 2</expression-string>
+        <expression-string />
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>rx =</expression-string>
+        <expression-string />
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>result == 'addi'</expression-string>
+        <expression-string />
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
     <expressions id="watch">
+      <expression>
+        <expression-string>value1[1:9]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>v</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>memory[8706]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>memory[aux]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>aux[1:31]</expression-string>
         <language-id>Python</language-id>
@@ -414,24 +445,33 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>aux[0:29]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>aux[0:30]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>reg[5]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="33" lean-forward="true" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/a.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="38" selection-end-line="115" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teste.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -627,13 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="331" selection-start-line="331" selection-end-line="331" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24496">
@@ -648,25 +681,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/a.out">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="38" selection-end-line="115" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/teste.py" />
     <entry file="file://$PROJECT_DIR$/teste.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        <state relative-caret-position="376">
+          <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/teste.py" />
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/a.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="24" column="55" selection-end-line="128" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12539">
-          <caret line="3" column="33" lean-forward="true" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
+        <state relative-caret-position="-10198">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

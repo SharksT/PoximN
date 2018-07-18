@@ -3,12 +3,18 @@ import ctypes
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
+float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
 
 def float_bin(x):
-    return bin(ctypes.c_uint.from_buffer(ctypes.c_float(x)).value)[2:].zfill(32)
+    return str(bin(ctypes.c_uint.from_buffer(ctypes.c_float(x)).value)[2:].zfill(32))
+
+
+def float_expo(value1, value2):
+    global float_c
+    float_c = abs(int(value1[1:9], 2) - int(value2[1:9], 2)) + 1
 
 
 def calculate_fr(x, y, z, result):
@@ -106,7 +112,7 @@ def checktype(result):
     result1 = ['add', 'sub', 'mul', 'div', 'cmp', 'shl',
                'shr', 'and', 'not', 'or', 'xor', 'push', 'pop']
     result2 = ['addi', 'subi', 'muli', 'divi', 'cmpi', 'andi', 'noti', 'ldw', 'stw',
-               'ldb', 'stb', 'ldw', 'call', 'ret','xori','ori','isr']
+               'ldb', 'stb', 'ldw', 'call', 'ret','xori','ori','isr', 'reti']
     result3 = ['bun', 'beq', 'blt', 'bne', 'ble', 'bge', 'bgt','bzd','bnz','biv','bni', 'int']
     reg[33] = str(bin(reg[33]))[2:].zfill(32)
     if result in result1:
@@ -191,7 +197,7 @@ def prints(x, y, z, result, sinal):
     elif result in bgs:
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
             "{} 0x{}".format(result, hex(x)[2:].zfill(8).upper())).ljust(20)
-    elif result == 'ret':
+    elif (result == 'ret') or (result == 'reti'):
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + (
             "{} {}".format(result, checkextra(rx))).ljust(20)
     elif result == 'int':
@@ -226,7 +232,7 @@ def prints(x, y, z, result, sinal):
         pos = "{}=IPC>>2=0x{},{}=CR=0x{},PC=0x{}".format(checkextra(rx).upper(), hex(reg[rx])[2:].zfill(8).upper(),
                                                          checkextra(ry).upper(), hex(reg[ry])[2:].zfill(8).upper(),
                                                          hex(reg[32]*4)[2:].zfill(8).upper())
-    elif result == 'ret':
+    elif (result == 'ret') or (result == 'reti'):
         pos = "PC={}<<2=0x{}".format(checkextra(rx).upper(), hex(reg[32]*4)[2:].zfill(8).upper())
     elif result == 'push':
         pos = "MEM[{}->0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(reg[rx]*4)[2:].zfill(8).upper(),
@@ -265,6 +271,8 @@ f_output.write('[START OF SIMULATION]\n')
 while img != 0:
     if watch_ac:
         watch_c = watch_c - 1
+    if float_c != 0:
+        float_c = float_c - 1
     reg[33] = memory[reg[32]]
     reg[0] = 0
     ir = bin(reg[33])[2:].zfill(32)
@@ -283,6 +291,12 @@ while img != 0:
         reg[32] = 1
         reg[36] = 3786147034
         reg[37] = pre_pc
+    elif float_ac and (float_c == 0):
+        float_ac = False
+        f_output.write("[HARDWARE INTERRUPTION 2]\n")
+        reg[37] = reg[32]
+        reg[32] = 2
+        reg[36] = 32434004
     elif result == 'add':
         montador()
         reg[rz] = int(reg[rx]) + int(reg[ry])
@@ -422,13 +436,47 @@ while img != 0:
         montador()
         aux = reg[rx] + rz
         memory[aux] = reg[ry]
+        f_output.write(prints(rx, ry, rz, result, '') + '\n')
         if aux == 8224:
             aux = list(str(bin(reg[ry])[2:]).zfill(32))
             if aux[0] == '1':
                 aux = str(bin(reg[ry])[2:]).zfill(32)
                 watch_c = int(aux[1:32], 2)
                 watch_ac = True
-        f_output.write(prints(rx, ry, rz, result, '') + '\n')
+        if aux == 8707:
+            float_ac = True
+            aux = str(bin(reg[ry])[2:]).zfill(32)
+            float_op = aux[28:32]
+            choices = {'0001' : 'add', '0010': 'sub', '0011': 'mul', '0100': 'div', '0101': 'atx', '0110': 'aty'}
+            result_float = choices.get(float_op, 'Não definido')
+            if result_float == 'add':
+                memory[8706] = int(float_bin(memory[8704] + memory[8705]), 2)
+                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+            elif result_float == 'sub':
+                memory[8706] = int(float_bin(memory[8704] - memory[8705]), 2)
+                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+            elif result_float == 'mul':
+                memory[8706] = int(float_bin(memory[8704] * memory[8705]), 2)
+                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+            elif result_float == 'div':
+                try:
+                    memory[8706] = int(float_bin(memory[8704] / memory[8705]), 2)
+                except ZeroDivisionError:
+                    memory[8706] = 0
+                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+            elif result_float == 'atx':
+                memory[8704] = memory[8706]
+                float_c = 2
+            elif result_float == 'aty':
+                memory[8705] = memory[8706]
+                float_c = 2
+            else:
+                float_c = 2
+                aux1 = list(str(bin(memory[8707])[2:]).zfill(32))
+                aux1[26],aux1[27],aux1[28],aux1[29],aux1[30],aux1[31] = '1','0','0','0','0','0'
+                memory[8707] = ''.join(aux1)
+                memory[8707] = int(memory[8707], 2)
+
         reg[32] += 1
     elif result == 'ldb':
         montador()
@@ -560,7 +608,7 @@ while img != 0:
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'reti':
         montador()
-        reg[32] = reg[rz]
+        reg[32] = reg[rx]
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
