@@ -1,5 +1,6 @@
 import sys
 import ctypes
+import math
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
@@ -447,7 +448,8 @@ while img != 0:
             float_ac = True
             aux = str(bin(reg[ry])[2:]).zfill(32)
             float_op = aux[28:32]
-            choices = {'0001' : 'add', '0010': 'sub', '0011': 'mul', '0100': 'div', '0101': 'atx', '0110': 'aty'}
+            choices = {'0001' : 'add', '0010': 'sub', '0011': 'mul', '0100': 'div', '0101': 'atx',
+                       '0110': 'aty', '0111': 'teto', '1000': 'piso', '1001': 'arrendodamento'}
             result_float = choices.get(float_op, 'Não definido')
             if result_float == 'add':
                 memory[8706] = int(float_bin(memory[8704] + memory[8705]), 2)
@@ -469,6 +471,15 @@ while img != 0:
                 float_c = 2
             elif result_float == 'aty':
                 memory[8705] = memory[8706]
+                float_c = 2
+            elif result_float == 'teto':
+                memory[8706] = math.ceil(memory[8706])
+                float_c = 2
+            elif result_float == 'piso':
+                memory[8706] = math.floor(memory[8706])
+                float_c = 2
+            elif result_float == 'arrendodamento':
+                memory[8706] = round(memory[8706])
                 float_c = 2
             else:
                 float_c = 2
