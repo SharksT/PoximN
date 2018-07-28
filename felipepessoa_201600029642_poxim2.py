@@ -5,6 +5,7 @@ f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
+terminal, terminal_ac = '', True
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
@@ -189,7 +190,7 @@ def prints(x, y, z, result, sinal):
     elif (result not in tipo) and (result != 'ret' and result != 'reti' and result != 'int' and result != 'cmp') and (result not in bgs) and (result not in rxry):
         pre = "[0x{}]\t".format(hex(pre_pc*4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x),
                                                                                          z)).ljust(20)
-    elif result == 'cmp':
+    elif result == 'cmp' or result == 'cmpi':
         pre = "[0x{}]\t".format(hex(pre_pc * 4)[2:].zfill(8).upper()) + ("{} {},{}".format(result, checkextra(x),
                                                                                            checkextra(y))).ljust(20)
     elif result in rxry:
@@ -246,7 +247,7 @@ def prints(x, y, z, result, sinal):
                                          hex(z)[2:].zfill(4).upper(), hex(reg[rx])[2:].zfill(8).upper())
     elif result == 'int':
         pos = "CR=0x{},PC=0x{}".format(hex(reg[36])[2:].zfill(8).upper(),hex(reg[32]*4)[2:].zfill(8).upper())
-    else:
+    elif result != 'cmp' and result != 'cmpi':
         pos = "{}{}={}{}{}=0x{}".format(aux,checkextra(z).upper(),checkextra(x).upper(), sinal,
                                         checkextra(y).upper() if (result != 'shl' and result != 'shr') else ry+1,
                                      hex(reg[rz])[2:].zfill(8).upper())
@@ -491,7 +492,7 @@ while img != 0:
         reg[32] += 1
     elif result == 'ldb':
         montador()
-        reg[rx] = bin(memory[int((reg[ry] + rz) / 4)])[2:].zfill(32)
+        reg[rx] = str(bin(memory[int((reg[ry] + rz) / 4)])[2:]).zfill(32)
         if ((reg[ry] + rz) % 4) == 0:
             reg[rx] = int(reg[rx][0:8], 2)
         elif ((reg[ry] + rz) % 4) == 1:
@@ -505,7 +506,7 @@ while img != 0:
     elif result == 'stb':
         montador()
         a = int((reg[rx] + rz) / 4)
-        reg[ry] = str(bin(reg[ry])[2:])
+        reg[ry] = str(bin(reg[ry])[2:]).zfill(32)
         if ((reg[rx] + rz) % 4) == 3:
             memory[a] = int(reg[ry][0:8], 2)
         elif ((reg[rx] + rz) % 4) == 2:
@@ -515,6 +516,9 @@ while img != 0:
         elif ((reg[rx] + rz) % 4) == 0:
             memory[a] = int(reg[ry][24:32], 2)
         reg[ry] = int(reg[ry], 2)
+        if (a*4) == 34952:
+            terminal = terminal + chr(reg[ry])
+            terminal_ac = True
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'bun':
@@ -628,6 +632,8 @@ while img != 0:
             reg[36] = 0
             reg[32] = 0
             f_output.write(prints(rx, ry, rz, result, '') + '\n')
+            if (terminal_ac):
+                f_output.write(terminal + '\n')
             f_output.write('[END OF SIMULATION]')
             break
         else:
