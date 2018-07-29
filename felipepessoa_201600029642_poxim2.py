@@ -5,7 +5,8 @@ f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
-terminal, terminal_ac = '', True
+float_x, float_y, float_z, terminal, terminal_ac = 0.0 ,0.0 ,0.0 , '', False
+float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
@@ -16,7 +17,7 @@ def float_bin(x):
 
 def float_expo(value1, value2):
     global float_c
-    float_c = abs(int(value1[1:9], 2) - int(value2[1:9], 2)) + 1
+    float_c = abs(int(value1[1:9], 2) - int(value2[1:9], 2)) + 2
 
 
 def calculate_fr(x, y, z, result):
@@ -97,7 +98,10 @@ def calculate_er(x, y, z, result):
     if result == 'div' or result == 'divi':
         r = x
         try:
-            reg[34] = y % z
+            if result == 'divi':
+                reg[34] = y % z
+            elif result == 'div':
+                reg[34] = x % y
         except ZeroDivisionError:
             reg[34] = '0'.zfill(32)
     else:
@@ -222,7 +226,7 @@ def prints(x, y, z, result, sinal):
     elif result == 'stb':
         a = int((reg[rx] + rz) / 4)
         pos = "MEM[{}+0x{}]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
-                                            hex(memory[a])[2:].zfill(2).upper())
+                                            hex(reg[ry])[2:].zfill(2).upper())
     elif result == 'stw':
         pos = "MEM[({}+0x{})<<2]={}=0x{}".format(checkextra(rx).upper(), hex(rz)[2:].zfill(4).upper(),checkextra(y).upper(),
                                                  hex(reg[ry])[2:].zfill(8).upper())
@@ -273,7 +277,7 @@ f_output.write('[START OF SIMULATION]\n')
 while img != 0:
     if watch_ac:
         watch_c = watch_c - 1
-    if float_c != 0:
+    if float_ac:
         float_c = float_c - 1
     reg[33] = memory[reg[32]]
     reg[0] = 0
@@ -398,8 +402,8 @@ while img != 0:
     elif result == 'divi':
         montador()
         try:
-            reg[rx] = int(float(int(reg[ry]) / int(rz)))
             reg[rx] = calculate_er(reg[rx], reg[ry], rz, result)
+            reg[rx] = int(float(int(reg[ry]) / int(rz)))
             f_output.write(prints(rx, ry, rz, result, '/') + '\n')
         except ZeroDivisionError:
             reg[rx] = calculate_er(reg[rx], reg[ry], rz, result)
@@ -452,35 +456,51 @@ while img != 0:
             choices = {'0001' : 'add', '0010': 'sub', '0011': 'mul', '0100': 'div', '0101': 'atx',
                        '0110': 'aty', '0111': 'teto', '1000': 'piso', '1001': 'arrendodamento'}
             result_float = choices.get(float_op, 'Não definido')
+            if float_x_ac:
+                x_spec = float_x
+            else:
+                x_spec = memory[8704]
+            if float_y_ac:
+                y_spec = float_y
+            else:
+                y_spec = memory[8705]
             if result_float == 'add':
-                memory[8706] = int(float_bin(memory[8704] + memory[8705]), 2)
-                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+                float_z = x_spec + y_spec
+                memory[8706] = int(float_bin(float_z), 2)
+                float_expo(float_bin(x_spec), float_bin(y_spec))
             elif result_float == 'sub':
-                memory[8706] = int(float_bin(memory[8704] - memory[8705]), 2)
-                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+                float_z = x_spec - y_spec
+                memory[8706] = int(float_bin(float_z), 2)
+                float_expo(float_bin(x_spec), float_bin(y_spec))
             elif result_float == 'mul':
-                memory[8706] = int(float_bin(memory[8704] * memory[8705]), 2)
-                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+                float_z = x_spec * y_spec
+                memory[8706] = int(float_bin(float_z), 2)
+                float_expo(float_bin(x_spec), float_bin(y_spec))
             elif result_float == 'div':
                 try:
-                    memory[8706] = int(float_bin(memory[8704] / memory[8705]), 2)
+                    float_z = x_spec / y_spec
+                    memory[8706] = int(float_bin(float_z), 2)
                 except ZeroDivisionError:
                     memory[8706] = 0
-                float_expo(float_bin(memory[8704]), float_bin(memory[8705]))
+                float_expo(float_bin(x_spec), float_bin(y_spec))
             elif result_float == 'atx':
+                float_x = float_z
+                float_x_ac = True
                 memory[8704] = memory[8706]
                 float_c = 2
             elif result_float == 'aty':
+                float_y_ac = True
+                float_y = float_z
                 memory[8705] = memory[8706]
                 float_c = 2
             elif result_float == 'teto':
-                memory[8706] = math.ceil(memory[8706])
+                memory[8706] = math.ceil(float_z)
                 float_c = 2
             elif result_float == 'piso':
-                memory[8706] = math.floor(memory[8706])
+                memory[8706] = math.floor(float_z)
                 float_c = 2
             elif result_float == 'arrendodamento':
-                memory[8706] = round(memory[8706])
+                memory[8706] = round(float_z)
                 float_c = 2
             else:
                 float_c = 2
@@ -492,30 +512,38 @@ while img != 0:
         reg[32] += 1
     elif result == 'ldb':
         montador()
-        reg[rx] = str(bin(memory[int((reg[ry] + rz) / 4)])[2:]).zfill(32)
+        aux_ldb = str(bin(memory[int((reg[ry] + rz) / 4)])[2:].zfill(32))
+        aux_ldb1 = list(str(bin(reg[rx])[2:]).zfill(32))
         if ((reg[ry] + rz) % 4) == 0:
-            reg[rx] = int(reg[rx][0:8], 2)
-        elif ((reg[ry] + rz) % 4) == 1:
-            reg[rx] = int(reg[rx][8:16], 2)
+           aux_ldb1 = [aux_ldb[0], aux_ldb[1], aux_ldb[2], aux_ldb[3], aux_ldb[4], aux_ldb[5], aux_ldb[6], aux_ldb[7]]
+        if ((reg[ry] + rz) % 4) == 1:
+            aux_ldb1 = [aux_ldb[8], aux_ldb[9], aux_ldb[10], aux_ldb[11], aux_ldb[12], aux_ldb[13], aux_ldb[14], aux_ldb[15]]
         elif ((reg[ry] + rz) % 4) == 2:
-            reg[rx] = int(reg[rx][16:24], 2)
+            aux_ldb1 = [aux_ldb[16], aux_ldb[17], aux_ldb[18],aux_ldb[19], aux_ldb[20], aux_ldb[21], aux_ldb[22], aux_ldb[23]]
         elif ((reg[ry] + rz) % 4) == 3:
-            reg[rx] = int(reg[rx][24:32], 2)
+            aux_ldb1 = [aux_ldb[24], aux_ldb[25], aux_ldb[26], aux_ldb[27], aux_ldb[28], aux_ldb[29], aux_ldb[30], aux_ldb[31]]
+        reg[rx] = ''.join(aux_ldb1)
+        reg[rx] = int(reg[rx], 2)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'stb':
         montador()
         a = int((reg[rx] + rz) / 4)
-        reg[ry] = str(bin(reg[ry])[2:]).zfill(32)
+        aux1 = list(str(bin(memory[a])[2:]).zfill(32))
+        reg[ry] = str(bin(reg[ry])[2:].zfill(32))
         if ((reg[rx] + rz) % 4) == 3:
-            memory[a] = int(reg[ry][0:8], 2)
+             aux1[0:8] = [reg[ry][0],reg[ry][1],reg[ry][2],reg[ry][3],reg[ry][4],reg[ry][5],reg[ry][6],reg[ry][7]]
         elif ((reg[rx] + rz) % 4) == 2:
-            memory[a] = int(reg[ry][8:16], 2)
+            aux1[8:16] = [reg[ry][8], reg[ry][9], reg[ry][10], reg[ry][11], reg[ry][12], reg[ry][13], reg[ry][14], reg[ry][15]]
         elif ((reg[rx] + rz) % 4) == 1:
-            memory[a] = int(reg[ry][16:24], 2)
+            aux1[16:24] = [reg[ry][16], reg[ry][17], reg[ry][18], reg[ry][19], reg[ry][20], reg[ry][21], reg[ry][22],
+                          reg[ry][23]]
         elif ((reg[rx] + rz) % 4) == 0:
-            memory[a] = int(reg[ry][24:32], 2)
+            aux1[24:32] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
+                          reg[ry][31]]
         reg[ry] = int(reg[ry], 2)
+        memory[a] = ''.join(aux1)
+        memory[a] = int(memory[a],2)
         if (a*4) == 34952:
             terminal = terminal + chr(reg[ry])
             terminal_ac = True
@@ -631,7 +659,7 @@ while img != 0:
             reg[0] = 0
             reg[36] = 0
             reg[32] = 0
-            f_output.write(prints(rx, ry, rz, result, '') + '\n')
+            f_output.write(prints(rx, ry, rz, result, '')+ '\n')
             if (terminal_ac):
                 f_output.write(terminal + '\n')
             f_output.write('[END OF SIMULATION]')
