@@ -6,6 +6,7 @@ f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
 float_x, float_y, float_z, terminal, terminal_ac = 0.0 ,0.0 ,0.0 , '', False
+memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
@@ -511,34 +512,34 @@ while img != 0:
 
         reg[32] += 1
     elif result == 'ldb':
+        #182617361873
         montador()
-        aux_ldb = str(bin(memory[int((reg[ry] + rz) / 4)])[2:].zfill(32))
-        aux_ldb1 = list(str(bin(reg[rx])[2:]).zfill(32))
-        if ((reg[ry] + rz) % 4) == 0:
-           aux_ldb1 = [aux_ldb[0], aux_ldb[1], aux_ldb[2], aux_ldb[3], aux_ldb[4], aux_ldb[5], aux_ldb[6], aux_ldb[7]]
-        if ((reg[ry] + rz) % 4) == 1:
-            aux_ldb1 = [aux_ldb[8], aux_ldb[9], aux_ldb[10], aux_ldb[11], aux_ldb[12], aux_ldb[13], aux_ldb[14], aux_ldb[15]]
-        elif ((reg[ry] + rz) % 4) == 2:
-            aux_ldb1 = [aux_ldb[16], aux_ldb[17], aux_ldb[18],aux_ldb[19], aux_ldb[20], aux_ldb[21], aux_ldb[22], aux_ldb[23]]
-        elif ((reg[ry] + rz) % 4) == 3:
-            aux_ldb1 = [aux_ldb[24], aux_ldb[25], aux_ldb[26], aux_ldb[27], aux_ldb[28], aux_ldb[29], aux_ldb[30], aux_ldb[31]]
-        reg[rx] = ''.join(aux_ldb1)
-        reg[rx] = int(reg[rx], 2)
+        indice = (reg[ry] + rz) % 4
+        aux_ldb = str(bin(memory[int((reg[ry] + rz)/4)])[2:].zfill(32))
+        if indice == 0:
+            reg[rx] = int(aux_ldb[0:8], 2)
+        elif indice == 1:
+            reg[rx] = int(aux_ldb[8:16], 2)
+        elif indice == 2:
+            reg[rx] = int(aux_ldb[16:24], 2)
+        elif indice == 3:
+            reg[rx] = int(aux_ldb[24:32], 2)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'stb':
         montador()
         a = int((reg[rx] + rz) / 4)
         aux1 = list(str(bin(memory[a])[2:]).zfill(32))
+        print(aux1)
         reg[ry] = str(bin(reg[ry])[2:].zfill(32))
-        if ((reg[rx] + rz) % 4) == 3:
+        if ((reg[rx] + rz) % 4) == 0:
              aux1[0:8] = [reg[ry][0],reg[ry][1],reg[ry][2],reg[ry][3],reg[ry][4],reg[ry][5],reg[ry][6],reg[ry][7]]
-        elif ((reg[rx] + rz) % 4) == 2:
-            aux1[8:16] = [reg[ry][8], reg[ry][9], reg[ry][10], reg[ry][11], reg[ry][12], reg[ry][13], reg[ry][14], reg[ry][15]]
         elif ((reg[rx] + rz) % 4) == 1:
+            aux1[8:16] = [reg[ry][8], reg[ry][9], reg[ry][10], reg[ry][11], reg[ry][12], reg[ry][13], reg[ry][14], reg[ry][15]]
+        elif ((reg[rx] + rz) % 4) == 2:
             aux1[16:24] = [reg[ry][16], reg[ry][17], reg[ry][18], reg[ry][19], reg[ry][20], reg[ry][21], reg[ry][22],
                           reg[ry][23]]
-        elif ((reg[rx] + rz) % 4) == 0:
+        elif ((reg[rx] + rz) % 4) == 3:
             aux1[24:32] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
                           reg[ry][31]]
         reg[ry] = int(reg[ry], 2)
