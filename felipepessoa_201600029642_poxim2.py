@@ -533,12 +533,14 @@ while img != 0:
         print(aux1)
         reg[ry] = str(bin(reg[ry])[2:].zfill(32))
         if ((reg[rx] + rz) % 4) == 0:
-             aux1[0:8] = [reg[ry][0],reg[ry][1],reg[ry][2],reg[ry][3],reg[ry][4],reg[ry][5],reg[ry][6],reg[ry][7]]
+             aux1[0:8] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
+                          reg[ry][31]]
         elif ((reg[rx] + rz) % 4) == 1:
-            aux1[8:16] = [reg[ry][8], reg[ry][9], reg[ry][10], reg[ry][11], reg[ry][12], reg[ry][13], reg[ry][14], reg[ry][15]]
+            aux1[8:16] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
+                          reg[ry][31]]
         elif ((reg[rx] + rz) % 4) == 2:
-            aux1[16:24] = [reg[ry][16], reg[ry][17], reg[ry][18], reg[ry][19], reg[ry][20], reg[ry][21], reg[ry][22],
-                          reg[ry][23]]
+            aux1[16:24] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
+                          reg[ry][31]]
         elif ((reg[rx] + rz) % 4) == 3:
             aux1[24:32] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
                           reg[ry][31]]
