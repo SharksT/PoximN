@@ -5,7 +5,7 @@ f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
-float_x, float_y, float_z, terminal, terminal_ac = 0.0 ,0.0 ,0.0 , '', False
+float_x, float_y, float_z, terminal, terminal_ac, ie = 0.0 ,0.0 ,0.0 , '', False, False
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
@@ -24,10 +24,12 @@ def float_expo(value1, value2):
 def calculate_fr(x, y, z, result):
     # 6 IE, 5 IV, 4 OV. 3 ZD, 2 GT, 1 LT, EQ
     # 31 EQ, 30 LT, 29 GT. 28 ZD, 27 OV, 26 IV, 25 IE <- Ordem no registrador
-    global reg, rt, inter_ac
+    global reg, rt, inter_ac, ie
     aux, h = list(str(bin(reg[35])[2:]).zfill(32)), 23
     result1 = ['div', 'mul', 'muli', 'divi']
     result2 = ['add', 'addi']
+    if aux[25] == '1':
+        ie = True
     if result == 'div' or result == 'divi':
         if y == 0:
             h = 1
@@ -154,6 +156,10 @@ def checkextra(x):
         x = 'er'
     elif x == 35:
         x = 'fr'
+    elif x == 36:
+        x = 'cr'
+    elif x == 37:
+        x = 'ipc'
     else:
         x = 'r{}'.format(x)
     return x
@@ -276,8 +282,11 @@ def montador():
 
 f_output.write('[START OF SIMULATION]\n')
 while img != 0:
+    if bin(reg[35])[2:].zfill(32)[25] == '1':
+        ie = True
     if watch_ac:
-        watch_c = watch_c - 1
+        if watch_c > 0:
+            watch_c = watch_c - 1
     if float_ac:
         float_c = float_c - 1
     reg[33] = memory[reg[32]]
@@ -292,7 +301,7 @@ while img != 0:
                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',
                '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'}
     result = choices.get(op, 'Não definido')
-    if watch_ac and (watch_c == 0):
+    if watch_ac and (watch_c == 0) and ie:
         watch_ac = False
         f_output.write("[HARDWARE INTERRUPTION 1]\n")
         reg[32] = 1
@@ -483,6 +492,7 @@ while img != 0:
                     memory[8706] = int(float_bin(float_z), 2)
                 except ZeroDivisionError:
                     memory[8706] = 0
+                    float_ac = False
                 float_expo(float_bin(x_spec), float_bin(y_spec))
             elif result_float == 'atx':
                 float_x = float_z
