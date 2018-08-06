@@ -6,6 +6,7 @@ f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
 float_x, float_y, float_z, terminal, terminal_ac, ie = 0.0 ,0.0 ,0.0 , '', False, False
+inter_over = False
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
@@ -284,11 +285,21 @@ f_output.write('[START OF SIMULATION]\n')
 while img != 0:
     if bin(reg[35])[2:].zfill(32)[25] == '1':
         ie = True
-    if watch_ac:
-        if watch_c > 0:
-            watch_c = watch_c - 1
-    if float_ac:
-        float_c = float_c - 1
+    if watch_ac and (watch_c == 0) and ie:
+        watch_ac = False
+        f_output.write("[HARDWARE INTERRUPTION 1]\n")
+        print('a')
+        reg[32] = 1
+        reg[36] = 3786147034
+        reg[37] = pre_pc + 1
+    elif float_ac and (float_c == 0) and ie and inter_over:
+        float_ac = False
+        print('a')
+        memory[8707] = 0
+        f_output.write("[HARDWARE INTERRUPTION 2]\n")
+        reg[37] = reg[32]
+        reg[32] = 2
+        reg[36] = 32434004
     reg[33] = memory[reg[32]]
     reg[0] = 0
     ir = bin(reg[33])[2:].zfill(32)
@@ -301,19 +312,8 @@ while img != 0:
                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',
                '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'}
     result = choices.get(op, 'Não definido')
-    if watch_ac and (watch_c == 0) and ie:
-        watch_ac = False
-        f_output.write("[HARDWARE INTERRUPTION 1]\n")
-        reg[32] = 1
-        reg[36] = 3786147034
-        reg[37] = pre_pc
-    elif float_ac and (float_c == 0):
-        float_ac = False
-        f_output.write("[HARDWARE INTERRUPTION 2]\n")
-        reg[37] = reg[32]
-        reg[32] = 2
-        reg[36] = 32434004
-    elif result == 'add':
+
+    if result == 'add':
         montador()
         reg[rz] = int(reg[rx]) + int(reg[ry])
         f_output.write(prints(rx, ry, rz, result, '+') + '\n')
@@ -457,7 +457,7 @@ while img != 0:
             aux = list(str(bin(reg[ry])[2:]).zfill(32))
             if aux[0] == '1':
                 aux = str(bin(reg[ry])[2:]).zfill(32)
-                watch_c = int(aux[1:32], 2)
+                watch_c = int(aux[1:32], 2) +1
                 watch_ac = True
         if aux == 8707:
             float_ac = True
@@ -490,10 +490,10 @@ while img != 0:
                 try:
                     float_z = x_spec / y_spec
                     memory[8706] = int(float_bin(float_z), 2)
+                    float_expo(float_bin(x_spec), float_bin(y_spec))
                 except ZeroDivisionError:
-                    memory[8706] = 0
-                    float_ac = False
-                float_expo(float_bin(x_spec), float_bin(y_spec))
+                    memory[8707] = 32
+                    float_c = 2
             elif result_float == 'atx':
                 float_x = float_z
                 float_x_ac = True
@@ -540,7 +540,6 @@ while img != 0:
         montador()
         a = int((reg[rx] + rz) / 4)
         aux1 = list(str(bin(memory[a])[2:]).zfill(32))
-        print(aux1)
         reg[ry] = str(bin(reg[ry])[2:].zfill(32))
         if ((reg[rx] + rz) % 4) == 0:
              aux1[0:8] = [reg[ry][24], reg[ry][25], reg[ry][26], reg[ry][27], reg[ry][28], reg[ry][29], reg[ry][30],
@@ -665,6 +664,7 @@ while img != 0:
     elif result == 'reti':
         montador()
         reg[32] = reg[rx]
+        inter_over = True
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
@@ -681,11 +681,12 @@ while img != 0:
             reg[37] = reg[32] + 1
             reg[36] = rx
             reg[32] = 3
+            ie = False
             f_output.write(prints(rx, ry, rz, result, '') + '\n')
             f_output.write("[SOFTWARE INTERRUPTION]\n")
     else:
         aux = list(str(bin(reg[35])[2:]).zfill(32))
-        aux[26] = '1'
+        aux[25] = '1'
         reg[35] = ''.join(aux)
         reg[35] = int(reg[35], 2)
         reg[36] = reg[32]
@@ -693,5 +694,12 @@ while img != 0:
         f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32]*4)[2:].zfill(8).upper()))
         f_output.write("[SOFTWARE INTERRUPTION]\n")
         reg[32] = 3
+    if watch_ac:
+        if watch_c > 0:
+            watch_c = watch_c - 1
+    if float_ac:
+        if float_c > 0:
+            float_c = float_c - 1
+
 f_input.close()
 f_output.close()
