@@ -4,8 +4,8 @@ import math
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
-float_c, float_ac, memory[8704], memory[8705], memory[8706] = 0, False, 0, 0, 0
-float_x, float_y, float_z, terminal, terminal_ac, ie = 0.0 ,0.0 ,0.0 , '', False, False
+float_c, float_ac, memory[8704], memory[8705], memory[8706], memory[8707] = 0, False, 0, 0, 0, 0
+float_x, float_y, float_z, terminal, terminal_ac, ie, ov = 0.0 ,0.0 ,0.0 , '', False, False, False
 inter_over = False
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
@@ -25,7 +25,7 @@ def float_expo(value1, value2):
 def calculate_fr(x, y, z, result):
     # 6 IE, 5 IV, 4 OV. 3 ZD, 2 GT, 1 LT, EQ
     # 31 EQ, 30 LT, 29 GT. 28 ZD, 27 OV, 26 IV, 25 IE <- Ordem no registrador
-    global reg, rt, inter_ac, ie
+    global reg, rt, inter_ac, ie, ov
     aux, h = list(str(bin(reg[35])[2:]).zfill(32)), 23
     result1 = ['div', 'mul', 'muli', 'divi']
     result2 = ['add', 'addi']
@@ -88,6 +88,9 @@ def calculate_fr(x, y, z, result):
             if aux[27] != '1' and result in result2:
                 if abs(int(reg[rx])) < (2 ** 32):
                     aux[27] = '0'
+            if ov:
+                aux[27] = '1'
+                ov = False
             if h == 1:
                 aux[28] = '1'
             if h == 0:
@@ -98,7 +101,7 @@ def calculate_fr(x, y, z, result):
 
 
 def calculate_er(x, y, z, result):
-    global reg
+    global reg, ov
     if result == 'div' or result == 'divi':
         r = x
         try:
@@ -107,12 +110,15 @@ def calculate_er(x, y, z, result):
             elif result == 'div':
                 reg[34] = x % y
         except ZeroDivisionError:
-            reg[34] = '0'.zfill(32)
+            reg[34] = 0
     else:
         x = str(bin(x))[2:].zfill(64)
         aux2 = x[len(x) % 64:]
-        reg[34] = int(aux2[:32], 2)
+        if reg[34] == 0:
+            reg[34] = int(aux2[:32], 2)
         r = int(aux2[32:], 2)
+        if ((result == 'mul') or (result == 'muli')) and (reg[34] > 0):
+            ov = True
     return r
 
 
@@ -294,8 +300,6 @@ while img != 0:
         reg[37] = pre_pc + 1
     elif float_ac and (float_c == 0) and ie and inter_over:
         float_ac = False
-        print('a')
-        memory[8707] = 0
         f_output.write("[HARDWARE INTERRUPTION 2]\n")
         reg[37] = reg[32]
         reg[32] = 2
@@ -460,11 +464,12 @@ while img != 0:
                 watch_c = int(aux[1:32], 2) +1
                 watch_ac = True
         if aux == 8707:
+            aux2 = 0
             float_ac = True
             aux = str(bin(reg[ry])[2:]).zfill(32)
             float_op = aux[28:32]
             choices = {'0001' : 'add', '0010': 'sub', '0011': 'mul', '0100': 'div', '0101': 'atx',
-                       '0110': 'aty', '0111': 'teto', '1000': 'piso', '1001': 'arrendodamento'}
+                       '0110': 'aty', '0111': 'teto', '1000': 'piso', '1001': 'arrendodamento', '0000': 'nop'}
             result_float = choices.get(float_op, 'Não definido')
             if float_x_ac:
                 x_spec = float_x
@@ -492,7 +497,7 @@ while img != 0:
                     memory[8706] = int(float_bin(float_z), 2)
                     float_expo(float_bin(x_spec), float_bin(y_spec))
                 except ZeroDivisionError:
-                    memory[8707] = 32
+                    aux2 = 1
                     float_c = 2
             elif result_float == 'atx':
                 float_x = float_z
@@ -513,13 +518,16 @@ while img != 0:
             elif result_float == 'arrendodamento':
                 memory[8706] = round(float_z)
                 float_c = 2
+            elif result_float == 'nop':
+                a = a
             else:
                 float_c = 2
-                aux1 = list(str(bin(memory[8707])[2:]).zfill(32))
-                aux1[26],aux1[27],aux1[28],aux1[29],aux1[30],aux1[31] = '1','0','0','0','0','0'
-                memory[8707] = ''.join(aux1)
-                memory[8707] = int(memory[8707], 2)
-
+                aux2 = 1
+            if aux2 == 0:
+                memory[8707] = 0
+            else:
+                aux2 = 0
+                memory[8707] = 32
         reg[32] += 1
     elif result == 'ldb':
         #182617361873
@@ -686,13 +694,14 @@ while img != 0:
             f_output.write("[SOFTWARE INTERRUPTION]\n")
     else:
         aux = list(str(bin(reg[35])[2:]).zfill(32))
-        aux[25] = '1'
+        aux[26] = '1'
         reg[35] = ''.join(aux)
         reg[35] = int(reg[35], 2)
         reg[36] = reg[32]
         reg[37] = reg[32] + 1
         f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32]*4)[2:].zfill(8).upper()))
         f_output.write("[SOFTWARE INTERRUPTION]\n")
+        print(hex(reg[36]))
         reg[32] = 3
     if watch_ac:
         if watch_c > 0:
