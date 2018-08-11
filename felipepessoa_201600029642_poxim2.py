@@ -114,8 +114,7 @@ def calculate_er(x, y, z, result):
     else:
         x = str(bin(x))[2:].zfill(64)
         aux2 = x[len(x) % 64:]
-        if reg[34] == 0:
-            reg[34] = int(aux2[:32], 2)
+        reg[34] = int(aux2[:32], 2)
         r = int(aux2[32:], 2)
         if ((result == 'mul') or (result == 'muli')) and (reg[34] > 0):
             ov = True
@@ -289,16 +288,21 @@ def montador():
 
 f_output.write('[START OF SIMULATION]\n')
 while img != 0:
+    if (watch_ac == False)  and (float_ac == False):
+        print('a')
+        aux = list(str(bin(reg[35])[2:]).zfill(32))
+        aux[25] = '0'
+        reg[35] = ''.join(aux)
+        reg[35] = int(reg[35], 2)
     if bin(reg[35])[2:].zfill(32)[25] == '1':
         ie = True
     if watch_ac and (watch_c == 0) and ie:
         watch_ac = False
         f_output.write("[HARDWARE INTERRUPTION 1]\n")
-        print('a')
         reg[32] = 1
         reg[36] = 3786147034
         reg[37] = pre_pc + 1
-    elif float_ac and (float_c == 0) and ie and inter_over:
+    elif float_ac and (float_c == 0)  and inter_over:
         float_ac = False
         f_output.write("[HARDWARE INTERRUPTION 2]\n")
         reg[37] = reg[32]
@@ -348,13 +352,8 @@ while img != 0:
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'shl':
         montador()
-        reg[rz] = reg[rx] << (ry + 1)
-        reg[rz] = calculate_er(reg[rz], 0, 0, result)
-        f_output.write(prints(rx, ry, rz, result, '<<') + '\n')
-        reg[32] += 1
-    elif result == 'shl':
-        montador()
-        reg[rz] = reg[rx] << (ry + 1)
+        aux = int(str(bin(reg[34])[2:].zfill(32)) + str(bin(reg[rx])[2:].zfill(32)), 2)
+        reg[rz] = aux << (ry + 1)
         reg[rz] = calculate_er(reg[rz], 0, 0, result)
         f_output.write(prints(rx, ry, rz, result, '<<') + '\n')
         reg[32] += 1
