@@ -6,7 +6,7 @@ f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706], memory[8707] = 0, False, 0, 0, 0, 0
 float_x, float_y, float_z, terminal, terminal_ac, ie, ov = 0.0 ,0.0 ,0.0 , '', False, False, False
-inter_over = False
+inter_over,soft_ac= False, False
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
@@ -25,7 +25,7 @@ def float_expo(value1, value2):
 def calculate_fr(x, y, z, result):
     # 6 IE, 5 IV, 4 OV. 3 ZD, 2 GT, 1 LT, EQ
     # 31 EQ, 30 LT, 29 GT. 28 ZD, 27 OV, 26 IV, 25 IE <- Ordem no registrador
-    global reg, rt, inter_ac, ie, ov
+    global reg, rt, inter_ac, ie, ov, soft_ac
     aux, h = list(str(bin(reg[35])[2:]).zfill(32)), 23
     result1 = ['div', 'mul', 'muli', 'divi']
     result2 = ['add', 'addi']
@@ -38,6 +38,7 @@ def calculate_fr(x, y, z, result):
                 reg[36] = 1
                 inter_ac = True
                 reg[37] = reg[32] + 1
+                #soft_ac = True
                 reg[32] = 2
         else:
             h = 0
@@ -288,15 +289,9 @@ def montador():
 
 f_output.write('[START OF SIMULATION]\n')
 while img != 0:
-    if (watch_ac == False)  and (float_ac == False):
-        print('a')
-        aux = list(str(bin(reg[35])[2:]).zfill(32))
-        aux[25] = '0'
-        reg[35] = ''.join(aux)
-        reg[35] = int(reg[35], 2)
     if bin(reg[35])[2:].zfill(32)[25] == '1':
         ie = True
-    if watch_ac and (watch_c == 0) and ie:
+    if watch_ac and (watch_c == 0) and (soft_ac is False) and ie:
         watch_ac = False
         f_output.write("[HARDWARE INTERRUPTION 1]\n")
         reg[32] = 1
@@ -672,6 +667,13 @@ while img != 0:
         montador()
         reg[32] = reg[rx]
         inter_over = True
+        soft_ac = False
+    #  if watch_ac is False:
+    #     if float_ac is False:
+    #          aux = list(str(bin(reg[35])[2:]).zfill(32))
+    #          aux[25] = '0'
+    #          reg[35] = ''.join(aux)
+    #          reg[35] = int(reg[35], 2)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
@@ -688,9 +690,9 @@ while img != 0:
             reg[37] = reg[32] + 1
             reg[36] = rx
             reg[32] = 3
-            ie = False
             f_output.write(prints(rx, ry, rz, result, '') + '\n')
             f_output.write("[SOFTWARE INTERRUPTION]\n")
+            soft_ac = True
     else:
         aux = list(str(bin(reg[35])[2:]).zfill(32))
         aux[26] = '1'
@@ -700,6 +702,7 @@ while img != 0:
         reg[37] = reg[32] + 1
         f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32]*4)[2:].zfill(8).upper()))
         f_output.write("[SOFTWARE INTERRUPTION]\n")
+        #soft_ac = True
         print(hex(reg[36]))
         reg[32] = 3
     if watch_ac:
