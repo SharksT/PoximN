@@ -457,6 +457,8 @@ while img != 0:
                 aux = str(bin(reg[ry])[2:]).zfill(32)
                 watch_c = int(aux[1:32], 2) +1
                 watch_ac = True
+            elif aux[0] == '0':
+                watch_ac = False
         if aux == 8707:
             aux2 = 0
             float_ac = True
@@ -683,7 +685,7 @@ while img != 0:
             reg[32] = 0
             f_output.write(prints(rx, ry, rz, result, '')+ '\n')
             if (terminal_ac):
-                f_output.write(terminal + '\n')
+                f_output.write('[TERMINAL] \n'+ terminal + '\n')
             f_output.write('[END OF SIMULATION]')
             break
         else:
