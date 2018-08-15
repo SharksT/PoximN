@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="alguns outros coios">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" beforeDir="false" afterPath="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,8 +12,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1531930983976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1533819703673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1534361617404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1534179303722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1064614202">
@@ -59,36 +58,56 @@
     <session id="153043083">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.12" value="2" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.open.time.13" value="2" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="709" />
-          <entry key="txt" value="19" />
+          <entry key="out" value="1" />
+          <entry key="py" value="1403" />
+          <entry key="txt" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="19" />
-          <entry key="Python" value="709" />
+          <entry key="PLAIN_TEXT" value="40" />
+          <entry key="Python" value="1403" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="py" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Python" value="1" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="292" column="40" selection-start-line="292" selection-start-column="40" selection-end-line="292" selection-end-column="40" />
+            <state relative-caret-position="368">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#12320#12460#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/teste.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -96,8 +115,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/a.out">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="7767" column="27" selection-start-line="7767" selection-start-column="16" selection-end-line="7767" selection-end-column="27" />
+            <state relative-caret-position="2859084">
+              <caret line="124308" column="73" selection-start-line="124308" selection-start-column="73" selection-end-line="124308" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -127,7 +146,6 @@
       <find>ldb r4</find>
       <find>inter</find>
       <find>watch</find>
-      <find>stw</find>
       <find>div</find>
       <find>ha</find>
       <find>prints</find>
@@ -136,7 +154,6 @@
       <find>reti</find>
       <find>64</find>
       <find>watch_ac</find>
-      <find>stb</find>
       <find>memory[8707]</find>
       <find>R2=MEM[(R3+0x0000)&lt;&lt;2]=0x00000000</find>
       <find>aux2</find>
@@ -152,6 +169,8 @@
       <find>inter_ac</find>
       <find>inter_over</find>
       <find>push r28,fr</find>
+      <find>stb</find>
+      <find>stw</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -160,11 +179,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/teste.py" />
         <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim1.py" />
         <option value="$PROJECT_DIR$/teste.txt" />
-        <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" />
         <option value="$PROJECT_DIR$/a.out" />
+        <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" />
+        <option value="$PROJECT_DIR$/teste.py" />
       </list>
     </option>
   </component>
@@ -220,7 +239,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.felipepessoa_201600029642_poxim1">
+  <component name="RunManager" selected="Python.teste">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="PoximN" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -293,8 +312,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.felipepessoa_201600029642_poxim1" />
         <item itemvalue="Python.teste" />
+        <item itemvalue="Python.felipepessoa_201600029642_poxim1" />
       </list>
     </recent_temporary>
   </component>
@@ -386,26 +405,33 @@
       <option name="project" value="LOCAL" />
       <updated>1533751057327</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Ver 2.0 completed.">
+      <created>1534179577746</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1534179577746</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26752505" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49722221" visible="true" weight="0.38814017" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49722221" visible="true" weight="0.17789757" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39757413" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Messages" order="8" />
-      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49930555" weight="0.32894737" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49930555" weight="0.32884097" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="Terminal" order="12" />
@@ -461,7 +487,8 @@
     <MESSAGE value="ldb fixed" />
     <MESSAGE value="watchdog problem" />
     <MESSAGE value="alguns outros coios" />
-    <option name="LAST_COMMIT_MESSAGE" value="alguns outros coios" />
+    <MESSAGE value="Ver 2.0 completed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ver 2.0 completed." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -601,11 +628,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/teste.py" />
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/a.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2859084">
+          <caret line="124308" column="73" selection-start-line="124308" selection-start-column="73" selection-end-line="124308" selection-end-column="73" />
         </state>
       </provider>
     </entry>
@@ -616,21 +649,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/a.out">
+    <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="7767" column="27" selection-start-line="7767" selection-start-column="16" selection-end-line="7767" selection-end-column="27" />
+        <state relative-caret-position="368">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
+    <entry file="file://$PROJECT_DIR$/teste.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="292" column="40" selection-start-line="292" selection-start-column="40" selection-end-line="292" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#12320#12460#0" />
-          </folding>
+        <state relative-caret-position="276">
+          <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
         </state>
       </provider>
     </entry>

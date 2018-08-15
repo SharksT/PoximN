@@ -1,16 +1,22 @@
 import sys
 import ctypes
 import math
+import collections
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706], memory[8707] = 0, False, 0, 0, 0, 0
 float_x, float_y, float_z, terminal, terminal_ac, ie, ov = 0.0 ,0.0 ,0.0 , '', False, False, False
-inter_over,soft_ac= False, False
+inter_over, soft_ac= False, False
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
+
+
+
+
+
 
 
 def float_bin(x):
@@ -670,12 +676,6 @@ while img != 0:
         reg[32] = reg[rx]
         inter_over = True
         soft_ac = False
-    #  if watch_ac is False:
-    #     if float_ac is False:
-    #          aux = list(str(bin(reg[35])[2:]).zfill(32))
-    #          aux[25] = '0'
-    #          reg[35] = ''.join(aux)
-    #          reg[35] = int(reg[35], 2)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
     elif result == 'int':
         montador()
@@ -704,7 +704,6 @@ while img != 0:
         reg[37] = reg[32] + 1
         f_output.write('[INVALID INSTRUCTION @ 0x{}]\n'.format(hex(reg[32]*4)[2:].zfill(8).upper()))
         f_output.write("[SOFTWARE INTERRUPTION]\n")
-        #soft_ac = True
         print(hex(reg[36]))
         reg[32] = 3
     if watch_ac:
