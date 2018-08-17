@@ -7,16 +7,19 @@ f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706], memory[8707] = 0, False, 0, 0, 0, 0
 float_x, float_y, float_z, terminal, terminal_ac, ie, ov = 0.0 ,0.0 ,0.0 , '', False, False, False
-inter_over, soft_ac= False, False
+inter_over, soft_ac, flagC= False, False, False
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
 
-
-
-
+cache = collections.namedtuple('cache','v0 I0 ID0 data0 v1 I1 ID1 data1')
+cacheD, cacheI = [8], [8]
+cacheprep = cache(False,0,0,[0,0,0,0],False,0,0,[0,0,0,0])
+for i in range(8):
+    cacheD.append(cacheprep)
+    cacheI.append(cacheprep)
 
 
 def float_bin(x):
@@ -287,10 +290,33 @@ def prints(x, y, z, result, sinal):
     else:
         return pre + pos
 
+
 def montador():
     global reg, pre_pc, rx, ry, rz, rt
     reg[0], pre_pc, r = 0, reg[32], checktype(result)
     rx, ry, rz, rt = r['x'], r['y'], r['z'], r['t']
+
+
+def open_cache():
+    # rx + im16 <= Cache ldb,stb,stw,ldw
+    # cache pc <= data[1..3] (1 ao 4) , line[3..6] (5 ao 7), id[7..32]
+    tipoa = ['ldw', 'stb', 'stw', 'ldb']
+    pack = str((bin(reg[32])[2:].zfill(32)))
+    line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
+    if cacheI[line + 1].v0 is False:
+        cacheI[line+1].data0 = [memory[reg[32]],memory[reg[32]+1],memory[reg[32]+2],memory[reg[32]+3]]
+    else:
+        if cacheI[line + 1].ID0 == id:
+            return cacheI[line + 1].data0[data]
+      #  elif cacheI[line + 1].ID1 == id:
+      #     return cacheI[line + 1].data1[data]
+        if cacheI[line+1].ID1 == id:
+            cacheI[line + 1].data1 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2], memory[reg[32] + 3]]
+    if result in tipoa:
+        pack = str(bin((reg[rx] + rz)*4)[2:]).zfill(32)
+        line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
+        if cacheD[line+1].v0:
+            if cacheD[line+1].data0[data] != 0:
 
 
 f_output.write('[START OF SIMULATION]\n')
@@ -303,7 +329,7 @@ while img != 0:
         reg[32] = 1
         reg[36] = 3786147034
         reg[37] = pre_pc + 1
-    elif float_ac and (float_c == 0)  and inter_over:
+    elif float_ac and (float_c == 0) and inter_over:
         float_ac = False
         f_output.write("[HARDWARE INTERRUPTION 2]\n")
         reg[37] = reg[32]
