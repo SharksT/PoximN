@@ -301,22 +301,50 @@ def open_cache():
     # rx + im16 <= Cache ldb,stb,stw,ldw
     # cache pc <= data[1..3] (1 ao 4) , line[3..6] (5 ao 7), id[7..32]
     tipoa = ['ldw', 'stb', 'stw', 'ldb']
+    for i in cacheI:
+        if cacheI[i].v0:
+            cacheI[i].I0 = cacheI[i].I0 + 1
+        if cacheI[i].v1:
+            cacheI[i].I1 = cacheI[i].I0 + 1
     pack = str((bin(reg[32])[2:].zfill(32)))
     line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
     if cacheI[line + 1].v0 is False:
-        cacheI[line+1].data0 = [memory[reg[32]],memory[reg[32]+1],memory[reg[32]+2],memory[reg[32]+3]]
+        cacheI[line+1].data0 = [memory[reg[32]], memory[reg[32]+1], memory[reg[32]+2], memory[reg[32]+3]]
+        cacheI[line+1].ID0 = id
+        cacheData = cacheI[line + 1].data0[data]
+        cacheI[line + 1].I0 = 0
     else:
         if cacheI[line + 1].ID0 == id:
-            return cacheI[line + 1].data0[data]
-      #  elif cacheI[line + 1].ID1 == id:
-      #     return cacheI[line + 1].data1[data]
-        if cacheI[line+1].ID1 == id:
-            cacheI[line + 1].data1 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2], memory[reg[32] + 3]]
-    if result in tipoa:
-        pack = str(bin((reg[rx] + rz)*4)[2:]).zfill(32)
-        line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
-        if cacheD[line+1].v0:
-            if cacheD[line+1].data0[data] != 0:
+            cacheData = cacheI[line + 1].data0[data]
+            cacheI[line + 1].I0 = 0
+        else:
+            if cacheI[line+1].v1 is False:
+                cacheI[line + 1].data0 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
+                                          memory[reg[32] + 3]]
+                cacheI[line + 1].ID0 = id
+                cacheI[line+1].I0 = 0
+                cacheData = cacheI[line + 1].data0[data]
+            else:
+                if cacheI[line + 1].ID1 == id:
+                    cacheData =cacheI[line + 1].data1[data]
+                    cacheI[line + 1].I1 = 0
+                if cacheI[line+1].I0 > cacheI[line+1].I1:
+                    cacheI[line + 1].data1 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
+                                              memory[reg[32] + 3]]
+                    cacheI[line + 1].ID1 = id
+                    cacheData = cacheI[line + 1].data1[data]
+                    cacheI[line + 1].I1 = 0
+                elif cacheI[line+1].I0 < cacheI[line+1].I1:
+                    cacheI[line + 1].data0 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
+                                              memory[reg[32] + 3]]
+                    cacheI[line + 1].ID0 = id
+                    cacheData = cacheI[line + 1].data0[data]
+                else:
+                    cacheI[line + 1].data0 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
+                                              memory[reg[32] + 3]]
+                    cacheI[line + 1].ID0 = id
+                    cacheData = cacheI[line + 1].data0[data]
+    return cacheData
 
 
 f_output.write('[START OF SIMULATION]\n')
