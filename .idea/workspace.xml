@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="Consertado + cache init">
+      <change beforePath="$PROJECT_DIR$/.idea/PoximN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PoximN.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" beforeDir="false" afterPath="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste.py" beforeDir="false" afterPath="$PROJECT_DIR$/teste.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,8 +16,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1534523904961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1534528392815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1534785219561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1534964059620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1064614202">
@@ -58,34 +62,38 @@
     <session id="153043083">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.12" value="2" />
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.12" value="3" />
           <entry key="project.open.time.13" value="2" />
           <entry key="project.open.time.15" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="out" value="1" />
-          <entry key="py" value="2920" />
+          <entry key="py" value="5171" />
           <entry key="txt" value="76" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="77" />
-          <entry key="Python" value="2920" />
+          <entry key="Python" value="5171" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="2" />
+          <entry key="out" value="2" />
+          <entry key="pstat" value="4" />
+          <entry key="py" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="2" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="Profiler Session" value="4" />
+          <entry key="Python" value="4" />
         </counts>
       </usages-collector>
     </session>
@@ -95,44 +103,47 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="223">
-              <caret line="320" column="23" selection-start-line="320" selection-start-column="23" selection-end-line="320" selection-end-column="23" />
+            <state relative-caret-position="400">
+              <caret line="326" column="24" lean-forward="true" selection-start-line="326" selection-start-column="24" selection-end-line="326" selection-end-column="24" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#624#705#0" />
-                <element signature="e#744#823#0" />
-                <element signature="e#865#3281#0" />
-                <element signature="e#3323#3849#0" />
-                <element signature="e#3879#5049#0" />
-                <element signature="e#5076#5331#0" />
-                <element signature="e#5374#12572#0" />
-                <marker date="1534534434081" expanded="true" signature="12821:12822" ph="..." />
+                <element signature="e#677#764#0" />
+                <element signature="e#813#951#0" />
+                <element signature="e#871#952#0" />
+                <element signature="e#991#1070#0" />
+                <element signature="e#1112#3528#0" />
+                <element signature="e#3570#4096#0" />
+                <element signature="e#4126#5296#0" />
+                <element signature="e#5323#5578#0" />
+                <element signature="e#5621#12819#0" />
+                <element signature="e#12842#12982#0" />
+                <marker date="1534964295937" expanded="true" signature="12985:12986" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/teste.py">
+        <entry file="file://$PROJECT_DIR$/a.out">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="4" column="19" lean-forward="true" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+            <state relative-caret-position="422">
+              <caret line="345" column="19" selection-start-line="345" selection-start-column="19" selection-end-line="345" selection-end-column="19" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/a.out">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/teste.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="3" selection-end-column="10" />
+            <state relative-caret-position="368">
+              <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="mock:///Users/SharksT/Library/Caches/PyCharm2018.2/snapshots/PoximN1.pstat">
+          <provider selected="true" editor-type-id="profiler-session-editor" />
         </entry>
       </file>
     </leaf>
@@ -146,11 +157,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ldb r4</find>
-      <find>inter</find>
-      <find>watch</find>
-      <find>div</find>
-      <find>ha</find>
       <find>prints</find>
       <find>print</find>
       <find>hardware interruption 2</find>
@@ -170,13 +176,23 @@
       <find>ie</find>
       <find>shl r2,cr,1</find>
       <find>inter_ac</find>
-      <find>inter_over</find>
       <find>push r28,fr</find>
       <find>stb</find>
       <find>stw</find>
       <find>call</find>
       <find>ldw</find>
+      <find>ID0</find>
+      <find>I0</find>
+      <find>I1</find>
+      <find>ID1</find>
+      <find>reg[32]</find>
+      <find>inter_over</find>
     </findStrings>
+    <replaceStrings>
+      <replace>i0</replace>
+      <replace>i1</replace>
+      <replace>id1</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -209,6 +225,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -220,7 +237,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -431,20 +447,27 @@
       <option name="project" value="LOCAL" />
       <updated>1534532377019</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Consertado + cache init">
+      <created>1534705174715</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1534705174715</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27110156" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2746781" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49722221" weight="0.17789757" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39757413" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32884097" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49722221" visible="true" weight="0.18733154" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39757413" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -455,6 +478,7 @@
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="Terminal" order="12" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50277776" side_tool="true" weight="0.3881579" />
+      <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" x="0" y="0" width="310" height="700" id="Documentation" order="0" side_tool="true" weight="0.3298611" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
@@ -507,9 +531,9 @@
     <MESSAGE value="watchdog problem" />
     <MESSAGE value="alguns outros coios" />
     <MESSAGE value="Ver 2.0 completed." />
-    <MESSAGE value="Consertado + cache init" />
     <MESSAGE value="Cache init" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cache init" />
+    <MESSAGE value="Consertado + cache init" />
+    <option name="LAST_COMMIT_MESSAGE" value="Consertado + cache init" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -523,10 +547,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="pack[27:30]" language="Python" />
-        <watch expression="pack[25:28]" language="Python" />
-        <watch expression="pack[27:]" language="Python" />
-        <watch expression="pack" language="Python" />
+        <watch expression="cacheI[line]" language="Python" />
       </configuration>
     </watches-manager>
   </component>
@@ -581,52 +602,54 @@
     </expressions>
     <expressions id="watch">
       <expression>
-        <expression-string>pack</expression-string>
+        <expression-string>reg[33] = 1073807392;   ir = bin(reg[33])[2:].zfill(32) ;    op = (ir[0:6]);     choices = {'000000': 'add', '000001': 'sub', '000010': 'mul', '000011': 'div', '000100': 'cmp', '000101': 'shl',                '000110': 'shr', '000111': 'and', '001000': 'not', '001001': 'or', '001010': 'xor', '001011': 'push',                '001100': 'pop', '010000': 'addi', '010001': 'subi', '010010': 'muli', '010011': 'divi', '010100': 'cmpi',                '010101': 'andi','010110': 'noti', '010111': 'ori', '011000': 'xori', '011001': 'ldw', '011010': 'stw',                '011011': 'ldb','011100': 'stb', '100000': 'bun', '100001': 'beq', '100010': 'blt', '100011': 'bgt',                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',                '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'};     result = choices.get(op, 'Não definido')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[27:]</expression-string>
+        <expression-string>reg[33] = cacheI[line].data0;   ir = bin(reg[33])[2:].zfill(32) ;    op = (ir[0:6]);     choices = {'000000': 'add', '000001': 'sub', '000010': 'mul', '000011': 'div', '000100': 'cmp', '000101': 'shl',                '000110': 'shr', '000111': 'and', '001000': 'not', '001001': 'or', '001010': 'xor', '001011': 'push',                '001100': 'pop', '010000': 'addi', '010001': 'subi', '010010': 'muli', '010011': 'divi', '010100': 'cmpi',                '010101': 'andi','010110': 'noti', '010111': 'ori', '011000': 'xori', '011001': 'ldw', '011010': 'stw',                '011011': 'ldb','011100': 'stb', '100000': 'bun', '100001': 'beq', '100010': 'blt', '100011': 'bgt',                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',                '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'};     result = choices.get(op, 'Não definido')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[25:28]</expression-string>
+        <expression-string>reg[33] = open_cache()     reg[0] = 0     ir = bin(reg[33])[2:].zfill(32)     op = (ir[0:6])     choices = {'000000': 'add', '000001': 'sub', '000010': 'mul', '000011': 'div', '000100': 'cmp', '000101': 'shl',                '000110': 'shr', '000111': 'and', '001000': 'not', '001001': 'or', '001010': 'xor', '001011': 'push',                '001100': 'pop', '010000': 'addi', '010001': 'subi', '010010': 'muli', '010011': 'divi', '010100': 'cmpi',                '010101': 'andi','010110': 'noti', '010111': 'ori', '011000': 'xori', '011001': 'ldw', '011010': 'stw',                '011011': 'ldb','011100': 'stb', '100000': 'bun', '100001': 'beq', '100010': 'blt', '100011': 'bgt',                '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001' : 'biv',                '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011' : 'reti', '111111': 'int'}     result = choices.get(op, 'Não definido')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[27:30]</expression-string>
+        <expression-string>cacheI[line]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[27:32]</expression-string>
+        <expression-string>choices = {'000000': 'add', '000001': 'sub', '000010': 'mul', '000011': 'div', '000100': 'cmp', '000101': 'shl',
+           '000110': 'shr', '000111': 'and', '001000': 'not', '001001': 'or', '001010': 'xor', '001011': 'push',
+           '001100': 'pop', '010000': 'addi', '010001': 'subi', '010010': 'muli', '010011': 'divi', '010100': 'cmpi',
+           '010101': 'andi', '010110': 'noti', '010111': 'ori', '011000': 'xori', '011001': 'ldw', '011010': 'stw',
+           '011011': 'ldb', '011100': 'stb', '100000': 'bun', '100001': 'beq', '100010': 'blt', '100011': 'bgt',
+           '100100': 'bne', '100101': 'ble', '100110': 'bge', '100111': 'bzd', '101000': 'bnz', '101001': 'biv',
+           '101010': 'bni', '110000': 'call', '110001': 'ret', '110010': 'isr', '110011': 'reti', '111111': 'int'}
+result = choices.get(op, 'Não definido')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[27]</expression-string>
+        <expression-string>cacheI[line].data0</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[27:28]</expression-string>
+        <expression-string>cacheI</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[26:]</expression-string>
+        <expression-string>cacheI[line+1]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pack[25:]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>pack[28:]</expression-string>
+        <expression-string>cachel[line+1].data0</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -654,37 +677,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/dataclasses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="802" selection-start-line="802" selection-end-line="802" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/teste.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="19" lean-forward="true" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+        <state relative-caret-position="46">
+          <caret line="2" selection-start-line="2" selection-end-line="14" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+            <marker date="1534785219555" expanded="true" signature="81:86" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teste.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/a.out">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/teste.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="3" selection-end-column="10" />
+        <state relative-caret-position="422">
+          <caret line="345" column="19" selection-start-line="345" selection-start-column="19" selection-end-line="345" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="320" column="23" selection-start-line="320" selection-start-column="23" selection-end-line="320" selection-end-column="23" />
+        <state relative-caret-position="400">
+          <caret line="326" column="24" lean-forward="true" selection-start-line="326" selection-start-column="24" selection-end-line="326" selection-end-column="24" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#624#705#0" />
-            <element signature="e#744#823#0" />
-            <element signature="e#865#3281#0" />
-            <element signature="e#3323#3849#0" />
-            <element signature="e#3879#5049#0" />
-            <element signature="e#5076#5331#0" />
-            <element signature="e#5374#12572#0" />
-            <marker date="1534534434081" expanded="true" signature="12821:12822" ph="..." />
+            <element signature="e#677#764#0" />
+            <element signature="e#813#951#0" />
+            <element signature="e#871#952#0" />
+            <element signature="e#991#1070#0" />
+            <element signature="e#1112#3528#0" />
+            <element signature="e#3570#4096#0" />
+            <element signature="e#4126#5296#0" />
+            <element signature="e#5323#5578#0" />
+            <element signature="e#5621#12819#0" />
+            <element signature="e#12842#12982#0" />
+            <marker date="1534964295937" expanded="true" signature="12985:12986" ph="..." />
           </folding>
         </state>
       </provider>

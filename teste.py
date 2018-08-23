@@ -1,13 +1,17 @@
-import collections
-cache = collections.namedtuple('cache','v0 I0 ID0 data0 v1 I1 ID1 data1')
+from dataclasses import dataclass
+from typing import List
+@dataclass
+class Cache:
+    v0: bool
+    v1: bool
+    i0: int
+    i1: int
+    data0: List[int]
+    data1: List[int]
 
-# rx + im16 <= Cache ldb,stb,stw,ldw
-# cache pc <= data[1..3] (1 ao 4) , line[3..6] (5 ao 7), id[7..32]
+cacheI = []
 
-cacheD,cacheI = [8],[8]
-cacheprep = cache(0,0,0,[0,0,0,0],0,0,0,[0,0,0,0])
 for i in range(8):
-    cacheD.append(cacheprep)
-    cacheI.append(cacheprep)
+    cacheI.append(Cache(False,False,0,0,[0,0,0,0],[0,0,0,0]))
 
-print(cacheD[2].v1)
+print(cacheI[1])

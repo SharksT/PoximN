@@ -1,26 +1,35 @@
 import sys
 import ctypes
 import math
-import collections
+from dataclasses import dataclass
+from typing import List
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
 float_c, float_ac, memory[8704], memory[8705], memory[8706], memory[8707] = 0, False, 0, 0, 0, 0
 float_x, float_y, float_z, terminal, terminal_ac, ie, ov = 0.0 ,0.0 ,0.0 , '', False, False, False
-inter_over, soft_ac, flagC= False, False, False
+inter_over, soft_ac, flagC, contA, contHI = False, False, False,0 , 0
 memory[8738] = 0
 float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
+@dataclass
+class Cache:
+    v0: bool
+    v1: bool
+    i0: int
+    i1: int
+    id0: int
+    id1: int
+    data0: List[int]
+    data1: List[int]
 
-cache = collections.namedtuple('cache','v0 I0 ID0 data0 v1 I1 ID1 data1')
-cacheD, cacheI = [8], [8]
-cacheprep = cache(False,0,0,[0,0,0,0],False,0,0,[0,0,0,0])
+cacheI = []
+cacheD = []
 for i in range(8):
-    cacheD.append(cacheprep)
-    cacheI.append(cacheprep)
-
+    cacheI.append(Cache(False, False, 0, 0, 0, 0, [0, 0, 0, 0], [0,0,0,0]))
+    cacheD.append(Cache(False, False, 0, 0, 0, 0, [0, 0, 0, 0], [0, 0, 0, 0]))
 
 def float_bin(x):
     return str(bin(ctypes.c_uint.from_buffer(ctypes.c_float(x)).value)[2:].zfill(32))
@@ -298,72 +307,115 @@ def montador():
 
 
 def open_cache():
-    # rx + im16 <= Cache ldb,stb,stw,ldw
+    # rx + im16 <= Cache ldb,stb,stw,ldw, push, pop
     # cache pc <= data[1..3] (1 ao 4) , line[3..6] (5 ao 7), id[7..32]
-    tipoa = ['ldw', 'stb', 'stw', 'ldb']
-    for i in cacheI:
-        if cacheI[i].v0:
-            cacheI[i].I0 = cacheI[i].I0 + 1
-        if cacheI[i].v1:
-            cacheI[i].I1 = cacheI[i].I0 + 1
-    pack = str((bin(reg[32])[2:].zfill(32)))
+    miss_fault = True
+    global contA, contHI
+    contA = contA + 1
+    if cacheI[i].v0:
+        cacheI[i].i0 = cacheI[i].i0 + 1
+    if cacheI[i].v1:
+        cacheI[i].i1 = cacheI[i].i0 + 1
+    pack = str((bin(reg[32] *4)[2:].zfill(32)))
     line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
-    if cacheI[line + 1].v0 is False:
-        cacheI[line+1].data0 = [memory[reg[32]], memory[reg[32]+1], memory[reg[32]+2], memory[reg[32]+3]]
-        cacheI[line+1].ID0 = id
-        cacheData = cacheI[line + 1].data0[data]
-        cacheI[line + 1].I0 = 0
+    pc_mod = reg[32] % 4
+    if pc_mod == 0:
+        pc = reg[32]
+    elif pc_mod == 1:
+        pc = reg[32] - 1
+    elif pc_mod == 2:
+        pc = reg[32] - 2
+    elif pc_mod == 3:
+        pc = reg[32] - 3
+    lista_memoria = [memory[(pc)%len(memory)], memory[(pc+1)%len(memory)], memory[(pc+2)%len(memory)], memory[(pc+3)%len(memory)]]
+
+    if cacheI[line].v0 is False:
+        cacheI[line].data0 = lista_memoria
+        cacheI[line].v0 = True
+        cacheI[line].id0 = id
+        cacheData = cacheI[line].data0[data]
+        cacheI[line].i0 = 0
+        miss_fault = False
     else:
-        if cacheI[line + 1].ID0 == id:
-            cacheData = cacheI[line + 1].data0[data]
-            cacheI[line + 1].I0 = 0
+        if cacheI[line].id0 == id:
+            cacheData = cacheI[line].data0[data]
+            cacheI[line].i0 = 0
+            miss_fault = True
+            contHI = contHI + 1
         else:
-            if cacheI[line+1].v1 is False:
-                cacheI[line + 1].data0 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
-                                          memory[reg[32] + 3]]
-                cacheI[line + 1].ID0 = id
-                cacheI[line+1].I0 = 0
-                cacheData = cacheI[line + 1].data0[data]
+            if cacheI[line].v1 is False:
+                cacheI[line].data0 = lista_memoria
+                cacheI[line].id0 = id
+                cacheI[line].i0 = 0
+                cacheI[line].v1 = True
+                cacheData = cacheI[line].data0[data]
+                miss_fault = False
             else:
-                if cacheI[line + 1].ID1 == id:
-                    cacheData =cacheI[line + 1].data1[data]
-                    cacheI[line + 1].I1 = 0
-                if cacheI[line+1].I0 > cacheI[line+1].I1:
-                    cacheI[line + 1].data1 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
-                                              memory[reg[32] + 3]]
-                    cacheI[line + 1].ID1 = id
-                    cacheData = cacheI[line + 1].data1[data]
-                    cacheI[line + 1].I1 = 0
-                elif cacheI[line+1].I0 < cacheI[line+1].I1:
-                    cacheI[line + 1].data0 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
-                                              memory[reg[32] + 3]]
-                    cacheI[line + 1].ID0 = id
-                    cacheData = cacheI[line + 1].data0[data]
+                if cacheI[line].id1 == id:
+                    cacheData= cacheI[line].data1[data]
+                    cacheI[line].i1 = 0
+                    miss_fault = True
+                    contHI = contHI + 1
+                if cacheI[line].i0 > cacheI[line+1].i1:
+                    cacheI[line ].data1 = lista_memoria
+                    cacheI[line ].id1 = id
+                    cacheData = cacheI[line].data1[data]
+                    miss_fault = False
+                    cacheI[line].i1 = 0
+                elif cacheI[line].i0 < cacheI[line+1].i1:
+                    cacheI[line].data0 = lista_memoria
+                    cacheI[line].id0 = id
+                    cacheData = cacheI[line].data0[data]
+                    miss_fault = False
                 else:
-                    cacheI[line + 1].data0 = [memory[reg[32]], memory[reg[32] + 1], memory[reg[32] + 2],
-                                              memory[reg[32] + 3]]
-                    cacheI[line + 1].ID0 = id
-                    cacheData = cacheI[line + 1].data0[data]
+                    cacheI[line].data0 = lista_memoria
+                    cacheI[line].id0 = id
+                    cacheData = cacheI[line].data0[data]
+                    miss_fault = False
+    pre = ('[0x{}]\t'.format(hex(reg[32] * 4)[2:].zfill(8).upper()) + '{} I->{}'.format('read_hit' if miss_fault else 'read_miss', line).ljust(20))
+    listf0 = []
+    listf1 = []
+    if miss_fault:
+        listf = cacheI[line].data0
+        listf1 = cacheI[line].data1
+    else:
+        listf = [0,0,0,0]
+        listf1 = [0,0,0,0]
+    pos = ('SET=0:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if (cacheI[line].v0 and miss_fault) else 'INVALID',
+                                                                    cacheI[line].i0,
+                                                                    hex(listf[0])[2:].zfill(8).upper(),
+                                                                    hex(listf[1])[2:].zfill(8).upper(),
+                                                                    hex(listf[2])[2:].zfill(8).upper(),
+                                                                    hex(listf[3])[2:].zfill(8).upper()))
+    pos = pos + '\n'.ljust(len(pre)+4) + ('SET=1:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if (cacheI[line].v1) else 'INVALID',
+                                                                    cacheI[line].i1,
+                                                                    hex(listf1[0])[2:].zfill(8).upper(),
+                                                                    hex(listf1[1])[2:].zfill(8).upper(),
+                                                                    hex(listf1[2])[2:].zfill(8).upper(),
+                                                                    hex(listf1[3])[2:].zfill(8).upper()))
+
+    f_output.write(pre+pos+'\n')
     return cacheData
 
-
+watch_was = False
 f_output.write('[START OF SIMULATION]\n')
 while img != 0:
     if bin(reg[35])[2:].zfill(32)[25] == '1':
         ie = True
     if watch_ac and (watch_c == 0) and (soft_ac is False) and ie:
         watch_ac = False
+        watch_was = True
         f_output.write("[HARDWARE INTERRUPTION 1]\n")
         reg[32] = 1
         reg[36] = 3786147034
         reg[37] = pre_pc + 1
-    elif float_ac and (float_c == 0) and inter_over:
+    elif float_ac and (float_c == 0) and (inter_over) :
         float_ac = False
         f_output.write("[HARDWARE INTERRUPTION 2]\n")
         reg[37] = reg[32]
         reg[32] = 2
         reg[36] = 32434004
-    reg[33] = memory[reg[32]]
+    reg[33] = open_cache()
     reg[0] = 0
     ir = bin(reg[33])[2:].zfill(32)
     op = (ir[0:6])
@@ -766,6 +818,7 @@ while img != 0:
     if float_ac:
         if float_c > 0:
             float_c = float_c - 1
+f_output.write('\n[CACHE]\nD_hit_rate: {}\nI_hit_rate: {} %'.format(1, '{0:.2f}'.format((contHI/contA)*100)))
 
 f_input.close()
 f_output.close()
