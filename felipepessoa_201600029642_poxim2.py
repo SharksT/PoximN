@@ -309,13 +309,14 @@ def montador():
 def open_cacheI():
     # rx + im16 <= Cache ldb,stb,stw,ldw, push, pop
     # cache pc <= data[1..3] (1 ao 4) , line[3..6] (5 ao 7), id[7..32]
-    miss_fault = True
+    hit_miss0, hit_miss1 = True,True
     global contA, contHI
     contA = contA + 1
-    if cacheI[i].v0:
-        cacheI[i].i0 = cacheI[i].i0 + 1
-    if cacheI[i].v1:
-        cacheI[i].i1 = cacheI[i].i0 + 1
+    for i in range(8):
+        if cacheI[i].v0:
+            cacheI[i].i0 = cacheI[i].i0 + 1
+        if cacheI[i].v1:
+            cacheI[i].i1 = cacheI[i].i0 + 1
     pack = str((bin(reg[32] *4)[2:].zfill(32)))
     line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
     realLen = len(memory) - 5
@@ -336,59 +337,60 @@ def open_cacheI():
         cacheI[line].id0 = id
         cacheData = cacheI[line].data0[data]
         cacheI[line].i0 = 0
-        miss_fault = False
+        hit_miss0 = False
     else:
         if cacheI[line].id0 == id:
             cacheData = cacheI[line].data0[data]
             cacheI[line].i0 = 0
-            miss_fault = True
+            hit_miss0 = True
             contHI = contHI + 1
         else:
             if cacheI[line].v1 is False:
-                cacheI[line].data0 = lista_memoria
-                cacheI[line].id0 = id
-                cacheI[line].i0 = 0
+                cacheI[line].data1 = lista_memoria
+                cacheI[line].id1 = id
+                cacheI[line].i1 = 0
                 cacheI[line].v1 = True
-                cacheData = cacheI[line].data0[data]
-                miss_fault = False
+                cacheData = cacheI[line].data1[data]
+                hit_miss1 = False
             else:
                 if cacheI[line].id1 == id:
                     cacheData= cacheI[line].data1[data]
                     cacheI[line].i1 = 0
-                    miss_fault = True
+                    hit_miss1 = True
                     contHI = contHI + 1
-                if cacheI[line].i0 > cacheI[line+1].i1:
+                if cacheI[line].i0 > cacheI[line].i1:
                     cacheI[line].data1 = lista_memoria
                     cacheI[line].id1 = id
                     cacheData = cacheI[line].data1[data]
-                    miss_fault = False
+                    hit_miss1 = False
                     cacheI[line].i1 = 0
-                elif cacheI[line].i0 < cacheI[line+1].i1:
+                elif cacheI[line].i0 < cacheI[line].i1:
                     cacheI[line].data0 = lista_memoria
                     cacheI[line].id0 = id
                     cacheData = cacheI[line].data0[data]
-                    miss_fault = False
+                    hit_miss0 = False
                 else:
                     cacheI[line].data0 = lista_memoria
                     cacheI[line].id0 = id
                     cacheData = cacheI[line].data0[data]
-                    miss_fault = False
-    pre = ('[0x{}]\t'.format(hex(reg[32] * 4)[2:].zfill(8).upper()) + '{} I->{}'.format('read_hit' if miss_fault else 'read_miss', line).ljust(20))
-    listf0 = []
-    listf1 = []
-    if miss_fault:
+                    hit_miss0 = False
+    pre = ('[0x{}]\t'.format(hex(reg[32] * 4)[2:].zfill(8).upper()) + '{} I->{}'.format('read_hit' if hit_miss0 else 'read_miss', line).ljust(20))
+    listf = [0, 0, 0, 0]
+    listf1 = [0, 0, 0, 0]
+    if hit_miss0:
         listf = cacheI[line].data0
+    elif hit_miss1:
         listf1 = cacheI[line].data1
     else:
         listf = [0,0,0,0]
         listf1 = [0,0,0,0]
-    pos = ('SET=0:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if (cacheI[line].v0 and miss_fault) else 'INVALID',
+    pos = ('SET=0:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if (cacheI[line].v0 and hit_miss0) else 'INVALID',
                                                                     cacheI[line].i0,
                                                                     hex(listf[0])[2:].zfill(8).upper(),
                                                                     hex(listf[1])[2:].zfill(8).upper(),
                                                                     hex(listf[2])[2:].zfill(8).upper(),
                                                                     hex(listf[3])[2:].zfill(8).upper()))
-    pos = pos + '\n'.ljust(len(pre)+4) + ('SET=1:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if (cacheI[line].v1) else 'INVALID',
+    pos = pos + '\n'.ljust(len(pre)+4) + ('SET=1:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if ((cacheI[line].v1) and hit_miss1) else 'INVALID',
                                                                     cacheI[line].i1,
                                                                     hex(listf1[0])[2:].zfill(8).upper(),
                                                                     hex(listf1[1])[2:].zfill(8).upper(),
@@ -655,7 +657,11 @@ while img != 0:
         reg[32] += 1
     elif result == 'ldw':
         montador()
-        reg[rx] = open_cacheD(result)
+        fpuwatchdog = [8704, 8705, 8706, 8707,8224]
+        if (reg[ry] +rz) in fpuwatchdog:
+            reg[rx] = memory[(reg[ry] + rz)]
+        else:
+            reg[rx] = open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'stw':
