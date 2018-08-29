@@ -459,14 +459,18 @@ def open_cacheD(tipo):
             ryrz = (reg[rx] + rz) - 3
     lista_memoria = [memory[(ryrz) % (realLen)], memory[(ryrz+1) % (realLen)], memory[(ryrz+2) % (realLen)], memory[(ryrz+3) % (realLen)]]
     if result in tipow:
-        if cacheD[line].id0 == id:
+        if (cacheD[line].id0 == id) and (cacheD[line].v0):
             hit_miss0 = True
-            memory[reg[rx]+rz] = cacheD[line].data0[data]
+            contHD = contHD + 1
+            #cacheD[line].data0[data] = reg[ry]
+            memory[reg[rx] + rz] = reg[ry]
             cacheData = 0
             cacheD[line].i0 = 0
-        elif cacheD[line].id1 == id:
+        elif (cacheD[line].id1 == id) and (cacheD[line].v1):
             hit_miss1 = True
-            memory[reg[rx] + rz] = cacheD[line].data1[data]
+            contHD = contHD + 1
+           # cacheD[line].data1[data] = reg[ry]
+            memory[reg[rx] + rz] = reg[ry]
             cacheD[line].i1 = 0
             cacheData = 0
         else:
