@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py" line="739" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py" line="740" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="876a20e5-949b-4ca4-8083-cdc01d875854" name="Default" comment="General bug fixes and write begin">
+      <change beforePath="$PROJECT_DIR$/.idea/PoximN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PoximN.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py" beforeDir="false" afterPath="$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/teste.txt" afterDir="false" />
@@ -16,8 +19,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1535547837256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PoximN$teste.coverage" NAME="teste Coverage Results" MODIFIED="1534785219561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PoximN$felipepessoa_201600029642_poxim1.coverage" NAME="felipepessoa_201600029642_poxim1 Coverage Results" MODIFIED="1535742436761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1064614202">
@@ -66,26 +69,26 @@
     <session id="153043083">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
-          <entry key="project.open.time.1" value="2" />
+          <entry key="project.closed" value="8" />
+          <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="3" />
-          <entry key="project.open.time.13" value="2" />
+          <entry key="project.open.time.13" value="3" />
           <entry key="project.open.time.15" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="out" value="1" />
-          <entry key="py" value="5581" />
+          <entry key="py" value="5759" />
           <entry key="txt" value="76" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="77" />
-          <entry key="Python" value="5581" />
+          <entry key="Python" value="5759" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -109,8 +112,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="475" column="13" selection-start-line="475" selection-start-column="13" selection-end-line="475" selection-end-column="13" />
+            <state relative-caret-position="-868">
+              <caret line="579" column="11" selection-start-line="579" selection-start-column="11" selection-end-line="579" selection-end-column="11" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#720#833#0" />
@@ -118,11 +121,12 @@
                 <element signature="e#1176#1255#0" />
                 <element signature="e#1297#3941#0" />
                 <element signature="e#3983#4509#0" />
-                <element signature="e#4539#5709#0" />
-                <element signature="e#5736#5991#0" />
-                <element signature="e#6034#13232#0" />
-                <element signature="e#13255#13395#0" />
-                <element signature="e#13421#18042#0" />
+                <element signature="e#4539#5708#0" />
+                <element signature="e#5735#5990#0" />
+                <element signature="e#6033#13231#0" />
+                <element signature="e#13254#13394#0" />
+                <element signature="e#13420#18041#0" />
+                <element signature="e#18071#24006#0" />
               </folding>
             </state>
           </provider>
@@ -131,8 +135,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/a.out">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="64" column="41" selection-end-line="427" selection-end-column="19" />
+            <state relative-caret-position="391">
+              <caret line="17" column="51" selection-end-line="25407" />
             </state>
           </provider>
         </entry>
@@ -140,8 +144,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/teste.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="512">
-              <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+            <state relative-caret-position="424">
+              <caret line="2964" column="10" selection-start-line="2964" selection-start-column="10" selection-end-line="2964" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -157,7 +161,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mul r2,r1,r2</find>
       <find>ER=0x00000004</find>
       <find>ER</find>
       <find>shl</find>
@@ -178,7 +181,6 @@
       <find>result == 'stw'</find>
       <find>in</find>
       <find>call</find>
-      <find>ldb</find>
       <find>ov</find>
       <find>result2</find>
       <find>cacheI</find>
@@ -187,6 +189,8 @@
       <find>ret</find>
       <find>push</find>
       <find>stw</find>
+      <find>ldb</find>
+      <find>pop</find>
     </findStrings>
     <replaceStrings>
       <replace>i0</replace>
@@ -205,8 +209,8 @@
         <option value="$PROJECT_DIR$/teste.py" />
         <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim2.py" />
         <option value="$PROJECT_DIR$/a.out" />
-        <option value="$PROJECT_DIR$/teste.txt" />
         <option value="$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py" />
+        <option value="$PROJECT_DIR$/teste.txt" />
       </list>
     </option>
   </component>
@@ -292,13 +296,13 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\felip\PycharmProjects\PoximN\felipepessoa_201600029642_poxim3.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py" />
       <option name="PARAMETERS" value="teste.txt a.out" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -474,15 +478,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="886" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3008596" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3090129" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32884097" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49722221" visible="true" weight="0.18563686" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49722221" visible="true" weight="0.18463612" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39566395" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -559,7 +563,7 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <condition expression="rx == 174762 " language="Python" />
           <url>file://$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py</url>
-          <line>893</line>
+          <line>899</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
@@ -716,24 +720,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/teste.txt">
+    <entry file="file://$PROJECT_DIR$/a.out">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+        <state relative-caret-position="391">
+          <caret line="17" column="51" selection-end-line="25407" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/a.out">
+    <entry file="file://$PROJECT_DIR$/teste.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="64" column="41" selection-end-line="427" selection-end-column="19" />
+        <state relative-caret-position="424">
+          <caret line="2964" column="10" selection-start-line="2964" selection-start-column="10" selection-end-line="2964" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/felipepessoa_201600029642_poxim3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="475" column="13" selection-start-line="475" selection-start-column="13" selection-end-line="475" selection-end-column="13" />
+        <state relative-caret-position="-868">
+          <caret line="579" column="11" selection-start-line="579" selection-start-column="11" selection-end-line="579" selection-end-column="11" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#720#833#0" />
@@ -741,11 +745,12 @@
             <element signature="e#1176#1255#0" />
             <element signature="e#1297#3941#0" />
             <element signature="e#3983#4509#0" />
-            <element signature="e#4539#5709#0" />
-            <element signature="e#5736#5991#0" />
-            <element signature="e#6034#13232#0" />
-            <element signature="e#13255#13395#0" />
-            <element signature="e#13421#18042#0" />
+            <element signature="e#4539#5708#0" />
+            <element signature="e#5735#5990#0" />
+            <element signature="e#6033#13231#0" />
+            <element signature="e#13254#13394#0" />
+            <element signature="e#13420#18041#0" />
+            <element signature="e#18071#24006#0" />
           </folding>
         </state>
       </provider>

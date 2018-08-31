@@ -458,19 +458,19 @@ def open_cacheD(tipo):
         elif memory_mod == 3:
             ryrz = (reg[rx] + rz) - 3
     lista_memoria = [memory[(ryrz) % (realLen)], memory[(ryrz+1) % (realLen)], memory[(ryrz+2) % (realLen)], memory[(ryrz+3) % (realLen)]]
-    if result in tipow:
-        if (cacheD[line].id0 == id) and (cacheD[line].v0):
+    if result in tipow or (result == 'stb'):
+        if (cacheD[line].id0 == id) and (cacheD[line].v0) or (result == 'stb'):
             hit_miss0 = True
             contHD = contHD + 1
-            #cacheD[line].data0[data] = reg[ry]
-            memory[reg[rx] + rz] = reg[ry]
+            cacheD[line].data0[data] = reg[ry]
+            #memory[reg[rx] + rz] = reg[ry]
             cacheData = 0
             cacheD[line].i0 = 0
         elif (cacheD[line].id1 == id) and (cacheD[line].v1):
             hit_miss1 = True
             contHD = contHD + 1
-           # cacheD[line].data1[data] = reg[ry]
-            memory[reg[rx] + rz] = reg[ry]
+            cacheD[line].data1[data] = reg[ry]
+            #memory[reg[rx] + rz] = reg[ry]
             cacheD[line].i1 = 0
             cacheData = 0
         else:
@@ -530,11 +530,11 @@ def open_cacheD(tipo):
                         cacheD[line].i0 = 0
                         hit_miss0 = False
                         hit_miss = False
-    if result in tipow:
-        pre = ('[0x{}]\t'.format(hex((reg[rx] + rz )* 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
+    if result in tipow or (result == 'stb'):
+        pre = ('[0x{}]\t'.format(hex((reg[rx] + rz) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
             'write_hit' if hit_miss else 'write_miss', line).ljust(20))
     else:
-        pre = ('[0x{}]\t'.format(hex((reg[ry] + rz )* 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
+        pre = ('[0x{}]\t'.format(hex((reg[ry] + rz) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
         'read_hit' if hit_miss else 'read_miss', line).ljust(20))
     listf = [0, 0, 0, 0]
     listf1 = [0, 0, 0, 0]
@@ -577,13 +577,13 @@ while img != 0:
         reg[32] = 1
         reg[36] = 3786147034
         reg[37] = pre_pc + 1
-    elif (float_ac and (float_c == 0)) and ((watch_was and inter_over) or (watch_was is False)) :
+    elif ((float_ac and float_c == 0)) and ((watch_was and inter_over) or (watch_was is False)):
         float_ac = False
         f_output.write("[HARDWARE INTERRUPTION 2]\n")
         reg[37] = reg[32]
         reg[32] = 2
         reg[36] = 32434004
-    reg[33] = open_cacheI()
+    reg[33] = memory[reg[32]]   #open_cacheI()
     reg[0] = 0
     ir = bin(reg[33])[2:].zfill(32)
     op = (ir[0:6])
@@ -662,17 +662,18 @@ while img != 0:
     elif result == 'push':
         montador()
         aux = reg[rx] + rz
-        if (aux == 8224) or (aux == 8707):
-            memory[reg[rx]] = reg[ry]
-        else:
-            open_cacheD(result)
+        #if (aux == 8224) or (aux == 8707):
+        memory[reg[rx]] = reg[ry]
+        #else:
+        #    open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[rx] = reg[rx] - 1
         reg[32] += 1
     elif result == 'pop':
         montador()
         reg[ry] = reg[ry] + 1
-        reg[rx] = open_cacheD(result)
+        #reg[rx] = open_cacheD(result)
+        reg[rx] = ry
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'addi':
@@ -728,19 +729,19 @@ while img != 0:
     elif result == 'ldw':
         montador()
         fpuwatchdog = [8704, 8705, 8706, 8707,8224]
-        if (reg[ry] +rz) in fpuwatchdog:
-            reg[rx] = memory[(reg[ry] + rz)]
-        else:
-            reg[rx] = open_cacheD(result)
+ #       if (reg[ry] +rz) in fpuwatchdog:
+        reg[rx] = memory[(reg[ry] + rz)]
+  #      else:
+   #         reg[rx] = open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'stw':
         montador()
         aux = reg[rx] + rz
-        if (aux == 8224) or (aux == 8707):
-            memory[aux] = reg[ry]
-        else:
-            open_cacheD(result)
+       # if (aux == 8224) or (aux == 8707):
+        memory[aux] = reg[ry]
+        #else:
+        #    open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         if aux == 8224:
             aux = list(str(bin(reg[ry])[2:]).zfill(32))
@@ -818,6 +819,9 @@ while img != 0:
         reg[32] += 1
     elif result == 'ldb':
         montador()
+        a = int((reg[ry] + rz) / 4)
+       # if (a * 4) != 34952:
+        #    open_cacheD(result)
         indice = (reg[ry] + rz) % 4
         aux_ldb = str(bin(memory[int((reg[ry] + rz)/4)])[2:].zfill(32))
         if indice == 0:
@@ -853,6 +857,8 @@ while img != 0:
         if (a*4) == 34952:
             terminal = terminal + chr(reg[ry])
             terminal_ac = True
+        else:
+            open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'bun':
