@@ -22,8 +22,8 @@ class Cache:
     i1: int
     id0: int
     id1: int
-    data0: List[int]
-    data1: List[int]
+    data0: []
+    data1: []
 
 cacheI = []
 cacheD = []
@@ -320,6 +320,7 @@ def open_cacheI():
     hit_miss0, hit_miss1,hit_miss = True, True, True
     global contA, contHI
     contA = contA + 1
+    i_antigo0,i_antigo1= 987987987987987987897,987987987987987987897
     for i in range(8):
         if cacheI[i].v0:
             cacheI[i].i0 = cacheI[i].i0 + 1
@@ -338,7 +339,7 @@ def open_cacheI():
     elif pc_mod == 3:
         pc = reg[32] - 3
     lista_memoria = [memory[(pc) % realLen], memory[(pc+1) % realLen], memory[(pc+2)%realLen], memory[(pc+3)%realLen]]
-
+    antigo0,antigo1 = 1,1
     if cacheI[line].v0 is False:
         cacheI[line].data0 = lista_memoria
         cacheI[line].v0 = True
@@ -371,45 +372,55 @@ def open_cacheI():
                     hit_miss = True
                     contHI = contHI + 1
                 elif cacheI[line].i0 > cacheI[line].i1:
+                    antigo0 = cacheI[line].data0
+                    cacheI[line].data0 = lista_memoria
+                    cacheI[line].id0 = id
+                    cacheData = cacheI[line].data0[data]
+                    hit_miss1 = True
+                    hit_miss = False
+                    i_antigo0 = cacheI[line].i0
+                    cacheI[line].i0 = 0
+                elif cacheI[line].i0 < cacheI[line].i1:
+                    antigo1 *= cacheI[line].data1
                     cacheI[line].data1 = lista_memoria
                     cacheI[line].id1 = id
-                    cacheData = cacheI[line].data1[data]
-                    hit_miss1 = False
-                    hit_miss = False
+                    i_antigo1 = cacheI[line].i1
                     cacheI[line].i1 = 0
-                elif cacheI[line].i0 < cacheI[line].i1:
-                    cacheI[line].data0 = lista_memoria
-                    cacheI[line].id0 = id
-                    cacheI[line].i0 = 0
-                    cacheData = cacheI[line].data0[data]
-                    hit_miss0 = False
+                    cacheData = cacheI[line].data1[data]
+                    hit_miss0 = True
                     hit_miss = False
-                else:
+                elif cacheI[line].i0 == cacheI[line].i1:
+                    antigo0 = cacheI[line].data0
                     cacheI[line].data0 = lista_memoria
                     cacheI[line].id0 = id
                     cacheData = cacheI[line].data0[data]
+                    i_antigo0 *= cacheI[line].i0
                     cacheI[line].i0 = 0
-                    hit_miss0 = False
+                    hit_miss1 = True
                     hit_miss = False
     pre = ('[0x{}]\t'.format(hex(reg[32] * 4)[2:].zfill(8).upper()) + '{} I->{}'.format('read_hit' if hit_miss else 'read_miss', line).ljust(20))
     listf = [0, 0, 0, 0]
     listf1 = [0, 0, 0, 0]
     if hit_miss0:
         listf = cacheI[line].data0
+        if antigo0 != 1:
+            listf = antigo0
     else:
         listf = [0,0,0,0]
     if hit_miss1:
         listf1 = cacheI[line].data1
+        if antigo1 != 1:
+            listf1= antigo1
     else:
         listf1 = [0,0,0,0]
     pos = ('SET=0:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if (cacheI[line].v0 and hit_miss0) else 'INVALID',
-                                                                    cacheI[line].i0,
+                                                                    cacheI[line].i0 if (i_antigo0 ==987987987987987987897 ) else i_antigo0,
                                                                     hex(listf[0])[2:].zfill(8).upper(),
                                                                     hex(listf[1])[2:].zfill(8).upper(),
                                                                     hex(listf[2])[2:].zfill(8).upper(),
                                                                     hex(listf[3])[2:].zfill(8).upper()))
     pos = pos + '\n'.ljust(len(pre)+4) + ('SET=1:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format('VALID' if ((cacheI[line].v1) and hit_miss1) else 'INVALID',
-                                                                    cacheI[line].i1,
+                                                                    cacheI[line].i1 if (i_antigo1 ==987987987987987987897 ) else i_antigo1,
                                                                     hex(listf1[0])[2:].zfill(8).upper(),
                                                                     hex(listf1[1])[2:].zfill(8).upper(),
                                                                     hex(listf1[2])[2:].zfill(8).upper(),
@@ -432,10 +443,13 @@ def open_cacheD(tipo):
         if cacheD[i].v1:
             cacheD[i].i1 = cacheD[i].i1 + 1
     if result not in tipow:
-        pack = str((bin((reg[ry] + rz) * 4)[2:].zfill(32)))
+        if result == 'ldb':
+            pack = str((bin((reg[ry] + rz) )[2:].zfill(32)))
+        else:
+            pack = str((bin((reg[ry] + rz) * 4)[2:].zfill(32)))
         line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
         memory_mod = (reg[ry] + rz) % 4
-        realLen = len(memory) - 5
+        realLen = len(memory) - 6
         if memory_mod == 0:
             ryrz = reg[ry] + rz
         elif memory_mod == 1:
@@ -445,37 +459,50 @@ def open_cacheD(tipo):
         elif memory_mod == 3:
             ryrz = (reg[ry] + rz) - 3
     else:
-        pack = str((bin((reg[rx] + rz) * 4)[2:].zfill(32)))
+        if result == 'ldb':
+            pack = str((bin((reg[rx] + rz))[2:].zfill(32)))
+        else:
+            pack = str((bin((reg[rx] + rz) * 4)[2:].zfill(32)))
         line, id, data = int(pack[25:28], 2), int(pack[0:25], 2), int(pack[28:30], 2)
         memory_mod = (reg[rx] + rz) % 4
-        realLen = len(memory) - 5
+        realLen = len(memory) - 6
         if memory_mod == 0:
             ryrz = reg[rx] + rz
         elif memory_mod == 1:
-            ryrz = (reg[rx] + rz) - 1
+            ryrz = (reg[rx] + rz)  - 1
         elif memory_mod == 2:
-            ryrz = (reg[rx] + rz) - 2
+            ryrz = (reg[rx] + rz)  - 2
         elif memory_mod == 3:
-            ryrz = (reg[rx] + rz) - 3
-    lista_memoria = [memory[(ryrz) % (realLen)], memory[(ryrz+1) % (realLen)], memory[(ryrz+2) % (realLen)], memory[(ryrz+3) % (realLen)]]
+            ryrz = (reg[rx] + rz)  - 3
+    anterior0,anterior1 = 1, 1
+    antigo0,antigo1 = 1,1
+    i_antigo0, i_antigo1 = 6876546546546546546,6876546546546546546
+    if result == 'ldb':
+        lista_memoria = [memory[ math.floor((ryrz/4) % (realLen))], memory[ math.floor((((ryrz )/4)+1) % (realLen))], memory[ math.floor((((ryrz)/4)+2) % (realLen))],
+                         memory[ math.floor((((ryrz)/4) +3) % (realLen))]]
+    else:
+        lista_memoria = [memory[(ryrz) % (realLen)], memory[(ryrz+1) % (realLen)], memory[(ryrz+2) % (realLen)], memory[(ryrz+3) % (realLen)]]
     if result in tipow or (result == 'stb'):
-        if (cacheD[line].id0 == id) and (cacheD[line].v0) or (result == 'stb'):
+        if (cacheD[line].id0 == id) and (cacheD[line].v0):
             hit_miss0 = True
+            anterior0 *= cacheD[line].data0
             contHD = contHD + 1
             cacheD[line].data0[data] = reg[ry]
-            #memory[reg[rx] + rz] = reg[ry]
-            cacheData = 0
+            memory[reg[rx] + rz] = reg[ry]
             cacheD[line].i0 = 0
         elif (cacheD[line].id1 == id) and (cacheD[line].v1):
             hit_miss1 = True
             contHD = contHD + 1
+            anterior1 *= cacheD[line].data1
             cacheD[line].data1[data] = reg[ry]
-            #memory[reg[rx] + rz] = reg[ry]
+            memory[reg[rx] + rz] = reg[ry]
             cacheD[line].i1 = 0
-            cacheData = 0
         else:
             hit_miss = False
             memory[reg[rx] + rz] = reg[ry]
+        if result == 'ldb':
+            cacheData = cacheD[line].data0
+        else:
             cacheData = 0
     else:
         if cacheD[line].v0 is False:
@@ -510,20 +537,25 @@ def open_cacheD(tipo):
                         hit_miss = True
                         contHD = contHD + 1
                     elif cacheD[line].i0 > cacheD[line].i1:
-                        cacheD[line].data1 = lista_memoria
-                        cacheD[line].id1 = id
-                        cacheData = cacheD[line].data1[data]
-                        hit_miss1 = False
-                        hit_miss = False
-                        cacheD[line].i1 = 0
-                    elif cacheD[line].i0 < cacheD[line].i1:
+                        i_antigo0 = cacheD[line].i0
+                        antigo0 = cacheD[line].data0
                         cacheD[line].data0 = lista_memoria
                         cacheD[line].id0 = id
-                        cacheD[line].i0 = 0
                         cacheData = cacheD[line].data0[data]
-                        hit_miss0 = False
+                        hit_miss1 = True
+                        hit_miss = False
+                        cacheD[line].i0 = 0
+                    elif cacheD[line].i0 < cacheD[line].i1:
+                        antigo1 = cacheD[line].data1
+                        i_antigo1 =  cacheD[line].i1
+                        cacheD[line].data1 = lista_memoria
+                        cacheD[line].id1 = id
+                        cacheD[line].i1 = 0
+                        cacheData = cacheD[line].data1[data]
+                        hit_miss0 = True
                         hit_miss = False
                     else:
+                        antigo1 = cacheD[line].data1
                         cacheD[line].data0 = lista_memoria
                         cacheD[line].id0 = id
                         cacheData = cacheD[line].data0[data]
@@ -531,8 +563,11 @@ def open_cacheD(tipo):
                         hit_miss0 = False
                         hit_miss = False
     if result in tipow or (result == 'stb'):
-        pre = ('[0x{}]\t'.format(hex((reg[rx] + rz) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
+        pre = ('[0x{}]\t'.format(hex((reg[rx]) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
             'write_hit' if hit_miss else 'write_miss', line).ljust(20))
+    elif result == 'ldb':
+        pre = ('[0x{}]\t'.format(hex(reg[ry])[2:].zfill(8).upper()) + '{} D->{}'.format(
+            'read_hit' if hit_miss else 'read_miss', line).ljust(20))
     else:
         pre = ('[0x{}]\t'.format(hex((reg[ry] + rz) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
         'read_hit' if hit_miss else 'read_miss', line).ljust(20))
@@ -540,22 +575,30 @@ def open_cacheD(tipo):
     listf1 = [0, 0, 0, 0]
     if hit_miss0:
         listf = cacheD[line].data0
+        if anterior0 != 1:
+            listf = anterior0
+        if antigo0 != 1:
+            listf = antigo0
     else:
         listf = [0, 0, 0, 0]
     if hit_miss1:
         listf1 = cacheD[line].data1
+        if anterior1 != 1:
+            listf1 = anterior1
+        if antigo1 != 1:
+            listf1 = antigo1
     else:
         listf1 = [0, 0, 0, 0]
     pos = ('SET=0:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format(
         'VALID' if (cacheD[line].v0 and hit_miss0) else 'INVALID',
-        cacheD[line].i0,
+        cacheD[line].i0 if (i_antigo0 == 6876546546546546546) else i_antigo0,
         hex(listf[0])[2:].zfill(8).upper(),
         hex(listf[1])[2:].zfill(8).upper(),
         hex(listf[2])[2:].zfill(8).upper(),
         hex(listf[3])[2:].zfill(8).upper()))
     pos = pos + '\n'.ljust(len(pre) + 4) + ('SET=1:STATUS={},AGE={},DATA=0x{}|0x{}|0x{}|0x{}'.format(
         'VALID' if ((cacheD[line].v1) and hit_miss1) else 'INVALID',
-        cacheD[line].i1,
+        cacheD[line].i1  if (i_antigo1 == 6876546546546546546) else i_antigo1,
         hex(listf1[0])[2:].zfill(8).upper(),
         hex(listf1[1])[2:].zfill(8).upper(),
         hex(listf1[2])[2:].zfill(8).upper(),
@@ -577,13 +620,13 @@ while img != 0:
         reg[32] = 1
         reg[36] = 3786147034
         reg[37] = pre_pc + 1
-    elif ((float_ac and float_c == 0)) and ((watch_was and inter_over) or (watch_was is False)):
+    elif ((float_ac and float_c == 0)) and ((watch_was and inter_over) or (watch_was is False) and ie ):
         float_ac = False
         f_output.write("[HARDWARE INTERRUPTION 2]\n")
         reg[37] = reg[32]
         reg[32] = 2
         reg[36] = 32434004
-    reg[33] = memory[reg[32]]   #open_cacheI()
+    reg[33] = open_cacheI()
     reg[0] = 0
     ir = bin(reg[33])[2:].zfill(32)
     op = (ir[0:6])
@@ -662,18 +705,18 @@ while img != 0:
     elif result == 'push':
         montador()
         aux = reg[rx] + rz
-        #if (aux == 8224) or (aux == 8707):
-        memory[reg[rx]] = reg[ry]
-        #else:
-        #    open_cacheD(result)
+        if (aux == 8224) or (aux == 8707):
+            memory[reg[rx]] = reg[ry]
+        else:
+            open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[rx] = reg[rx] - 1
         reg[32] += 1
     elif result == 'pop':
         montador()
         reg[ry] = reg[ry] + 1
-        #reg[rx] = open_cacheD(result)
-        reg[rx] = ry
+        reg[rx] = open_cacheD(result)
+        #reg[rx] = memory[reg[ry]]
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'addi':
@@ -729,19 +772,20 @@ while img != 0:
     elif result == 'ldw':
         montador()
         fpuwatchdog = [8704, 8705, 8706, 8707,8224]
- #       if (reg[ry] +rz) in fpuwatchdog:
-        reg[rx] = memory[(reg[ry] + rz)]
-  #      else:
-   #         reg[rx] = open_cacheD(result)
+        if (reg[ry] +rz) in fpuwatchdog:
+           reg[rx] = memory[(reg[ry] + rz)]
+        else:
+            reg[rx] = open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         reg[32] += 1
     elif result == 'stw':
         montador()
+        fpuwatchdog = [8704, 8705, 8706, 8707, 8224]
         aux = reg[rx] + rz
-       # if (aux == 8224) or (aux == 8707):
-        memory[aux] = reg[ry]
-        #else:
-        #    open_cacheD(result)
+        if aux in fpuwatchdog:
+            memory[aux] = reg[ry]
+        else:
+            open_cacheD(result)
         f_output.write(prints(rx, ry, rz, result, '') + '\n')
         if aux == 8224:
             aux = list(str(bin(reg[ry])[2:]).zfill(32))
@@ -820,8 +864,8 @@ while img != 0:
     elif result == 'ldb':
         montador()
         a = int((reg[ry] + rz) / 4)
-       # if (a * 4) != 34952:
-        #    open_cacheD(result)
+        if (a * 4) != 34952:
+            open_cacheD(result)
         indice = (reg[ry] + rz) % 4
         aux_ldb = str(bin(memory[int((reg[ry] + rz)/4)])[2:].zfill(32))
         if indice == 0:
