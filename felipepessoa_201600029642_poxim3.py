@@ -1,8 +1,8 @@
 import sys
 import ctypes
 import math
-from dataclasses import dataclass
-from typing import List
+#from dataclasses import dataclass
+#from typing import List
 f_input = open(sys.argv[1], 'r')
 f_output = open(sys.argv[2], 'w')
 rx, ry, rz, memory, reg, img, pre_pc, rt, inter_ac, watch_ac, watch_c = 0, 0, 0, {}, [0] * 38, 25, 0, '', False, False, 0
@@ -14,16 +14,20 @@ float_x_ac, float_y_ac = False, False
 for i, line in enumerate(f_input):
     memory[i] = int(line, 16)
 
-@dataclass
+exibir,exibir1 = 0, 0
+
+#@dataclass
 class Cache:
-    v0: bool
-    v1: bool
-    i0: int
-    i1: int
-    id0: int
-    id1: int
-    data0: []
-    data1: []
+
+    def __init__(self,v0,v1,i0,i1,id0,id1,data0,data1):
+        self.v0 = v0
+        self.v1= v1
+        self.i0= i0
+        self.i1= i1
+        self.id0= id0
+        self.id1= id1
+        self.data0= data0
+        self.data1= data1
 
 cacheI = []
 cacheD = []
@@ -435,7 +439,7 @@ def open_cacheD(tipo):
     # cache pc <= data[1..3] (1 ao 4) , line[3..6] (5 ao 7), id[7..32]
     hit_miss0, hit_miss1, hit_miss = True, True, True
     tipow = ['stw', 'stb', 'push']
-    global contD, contHD, ry, rz
+    global contD, contHD, ry, rz, exibir,exibir1
     contD = contD + 1
     for i in range(8):
         if cacheD[i].v0:
@@ -562,11 +566,16 @@ def open_cacheD(tipo):
                         cacheD[line].i0 = 0
                         hit_miss0 = False
                         hit_miss = False
+
+    if (reg[ry] % 4) == 0:
+        exibir = reg[ry]
+    if (reg[rx] != 0):
+        exibir1 = reg[rx] * 4
     if result in tipow or (result == 'stb'):
-        pre = ('[0x{}]\t'.format(hex((reg[rx]) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
+        pre = ('[0x{}]\t'.format(hex((reg[rx] + rz) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
             'write_hit' if hit_miss else 'write_miss', line).ljust(20))
     elif result == 'ldb':
-        pre = ('[0x{}]\t'.format(hex(reg[ry])[2:].zfill(8).upper()) + '{} D->{}'.format(
+        pre = ('[0x{}]\t'.format(hex(exibir)[2:].zfill(8).upper()) + '{} D->{}'.format(
             'read_hit' if hit_miss else 'read_miss', line).ljust(20))
     else:
         pre = ('[0x{}]\t'.format(hex((reg[ry] + rz) * 4)[2:].zfill(8).upper()) + '{} D->{}'.format(
@@ -1046,7 +1055,7 @@ while img != 0:
     if float_ac:
         if float_c > 0:
             float_c = float_c - 1
-f_output.write('\n[CACHE]\nD_hit_rate: {} %\nI_hit_rate: {} %'.format('{0:.2f}'.format((contHD/contD)*100), '{0:.2f}'.format((contHI/contA)*100)))
+f_output.write('\n[CACHE]\nD_hit_rate: {} %\nI_hit_rate: {} %\n'.format('{0:.2f}'.format((contHD/contD)*100), '{0:.2f}'.format((contHI/contA)*100)))
 
 
 f_input.close()
